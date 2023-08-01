@@ -1,118 +1,176 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0"/>
     <title>US Citizenship Civics Exam (2008 edition)</title>
     <style>
-    html {
+      /* Base styles */
+      html {
         scroll-behavior: smooth;
-        overflow-y:scroll;
-        overflow-x:scroll;
+        overflow-y: scroll;
       }
-    ::-webkit-scrollbar {
-      -webkit-appearance: none; 
-      width: 10px; height: 10px; 
-    }
-    ::-webkit-scrollbar-thumb {
-      border-radius: 4px; background-color: rgba(0,0,0,.5); 
-      -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5); 
-    }
-    body {
-      font-family: Montserrat, helvetica, arial, sans-serif;
-      font-size: 16x;
-      color: #0A3161;
-      background-color: #B31942;
-      margin: 0;
-    }
-    h2 {
-      font-weight: 700;
-      font-size: 1.6em;
-      margin-top: 30px;
-    }
-    p {
-      line-height: 1.6em;
-    }
 
-    #header {
-      background-color: #0A3161;
-      color: #FFFFFF;
-      padding: 10px 0 10px 0;
-      font-size: 2.2em;
-    }
+      ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 10px;
+        height: 10px;
+      }
 
-    #question {
-      background-color: #B31942;
-      color: #FFFFFF;
-      padding: 10px 0 10px 0;
-      font-size: 2.2em;
-    }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, .5);
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+      }
 
-    #progress, #seperator {
-      background-color: #FFFFFF;
-      color: #0A3161;
-      padding: 10px 0 10px 0;
-      font-size: 2.2em;
-    }
+      body {
+        font-family: Montserrat, helvetica, arial, sans-serif;
+        font-size: 16px;
+        color: #0A3161;
+        background-color: #B31942;
+        margin: 0;
+      }
 
+      h2 {
+        font-weight: 700;
+        font-size: 1.6em;
+        margin-top: 30px;
+      }
 
-    #answer {
-      background-color: #0A3161;
-      color: #FFFFFF;
-      padding: 10px 0 10px 0;
-      font-size: 2.2em;
-    }
+      p {
+        line-height: 1.6em;
+      }
 
-    .container {
-      max-width: 850px;
-      margin: 20px auto 20px auto;
-      padding-left: 15px;
-      padding-right: 15px
-    }
-    /* Styles for the modal background */
-    .modal-background {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
+      .container {
+        max-width: 850px;
+        margin: 20px auto 20px auto;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
 
-    /* Styles for the modal container */
-    .modal-container {
-      background-color: white;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    }
+      /* Common styles for header elements */
+      #header, #question, #progress, #seperator, #answer {
+        padding: 10px 0;
+        font-size: 2.2em;
+        color: #FFFFFF;
+      }
 
-    /* Styles for the input and button */
-    .input-field {
-      margin-bottom: 10px;
-    }
+      /* Header styles */
+      #header {
+        background-color: #0A3161;
+      }
 
-    .input-field label {
-      display: block;
-      font-weight: bold;
-    }
+      /* Question styles */
+      #question {
+        background-color: #B31942;
+      }
 
-    .input-field input[type="text"] {
-      width: 100%;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
+      /* Progress and Seperator styles */
+      #progress, #seperator {
+        background-color: #FFFFFF;
+        color: #0A3161;
+      }
 
-    .input-field button {
-      padding: 8px 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
+      /* Answer styles */
+      #answer {
+        background-color: #0A3161;
+      }
+
+      /* Styles for the modal background */
+      .modal-background {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Styles for the modal container */
+      .modal-container {
+        background-color: white;
+        padding: 100px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        max-width: 50%;
+      }
+      /* Media Queries for responsiveness */
+      /* iPad and smaller devices */
+      @media (max-width: 1024px) {
+        .modal-container {
+          max-width: 80%; /* Adjust the modal width for smaller devices */
+        }
+      }
+
+      /* iPhone and smaller devices */
+      @media (max-width: 768px) {
+        .modal-container {
+          max-width: 95%; /* Adjust the modal width for iPhone and smaller devices */
+        }
+      }
+
+      /* Desktop and larger devices */
+      @media (min-width: 1200px) {
+        .modal-container {
+          max-width: 50%; /* Adjust the modal width for desktop and larger devices */
+        }
+      }
+
+      /* Styles for the input and button */
+      .input-field {
+        margin-bottom: 10px;
+      }
+
+      .input-field label {
+        display: block;
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+      }
+
+      .input-field input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-bottom: 10px;
+      }
+
+      .input-field button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      /* Media Queries for responsiveness */
+      /* iPad and smaller devices */
+      @media (max-width: 1024px) {
+        h2 {
+          font-size: 1.4em;
+        }
+
+        .container {
+          max-width: 100%;
+        }
+      }
+
+      /* iPhone and smaller devices */
+      @media (max-width: 768px) {
+        h2 {
+          font-size: 1.2em;
+        }
+
+        .container {
+          max-width: 100%;
+        }
+
+        /* Adjust other styles as needed for smaller devices */
+      }
 
     </style>
 
@@ -125,8 +183,10 @@
         <div class="input-field">
           <label for="stateCodeInput">Enter State Short Code:</label>
           <input type="text" id="stateCodeInput" maxlength="2" placeholder="e.g. CA" />
+          <div></div>
+          <button onclick="getStateCode()">Submit</button>
         </div>
-        <button onclick="getStateCode()">Submit</button>
+        
       </div>
     </div>
     <div id="header">
@@ -173,7 +233,7 @@
     },
     {
       "Question" : "What does the Constitution do?",
-      "Answers" : ["sets up the government", "defines the government", "protects basic rights of Americans"]
+      "Answers" : ["Sets up the government", "Defines the government", "Protects basic rights of Americans"]
     },
     {
       "Question" : "The idea of self-government is in the first three words of the Constitution. What are these words?",
@@ -181,27 +241,27 @@
     },
     {
       "Question" : "What is an amendment?",
-      "Answers" : ["a change (to the Constitution)", "an addition (to the Constitution)"]
+      "Answers" : ["A change (to the Constitution)", "An addition (to the Constitution)"]
     },
     {
       "Question" : "What do we call the first ten amendments to the Constitution?",
-      "Answers" : ["the Bill of Rights"]
+      "Answers" : ["The Bill of Rights"]
     },
     {
       "Question" : "What is <u>one</u> right or freedom from the First Amendment?",
-      "Answers" : ["speech", "religion", "assembly", "press", "petition the government"]
+      "Answers" : ["Speech", "Religion", "Assembly", "Press", "Petition the government"]
     },
     {
       "Question" : "How many amendments does the Constitution have?",
-      "Answers" : ["twenty-seven (27)"]
+      "Answers" : ["Twenty-seven (27)"]
     },
     {
       "Question" : "What did the Declaration of Independence do?",
-      "Answers" : ["announced our independence (from Great Britain)", "declared our independence (from Great Britain)", "said that the United States is free (from Great Britain)"]
+      "Answers" : ["Announced our independence (from Great Britain)", "Declared our independence (from Great Britain)", "Said that the United States is free (from Great Britain)"]
     },
     {
       "Question" : "What are <u>two</u> rights in the Declaration of Independence?",
-      "Answers" : ["life", "liberty", "pursuit of happiness"]
+      "Answers" : ["Life", "Liberty", "Pursuit of happiness"]
     },
     {
       "Question" : "What is freedom of religion?",
@@ -209,7 +269,7 @@
     },
     {
       "Question" : "What is the economic system in the United States?",
-      "Answers" : ["capitalist economy", "market economy"]
+      "Answers" : ["Capitalist economy", "Market economy"]
     },
     {
       "Question" : "What is the 'rule of law'?",
@@ -217,15 +277,15 @@
     },
     {
       "Question" : "Name one branch or part of the government.",
-      "Answers" : ["Congress", "legislative", "President", "executive", "the courts", "judicial" ]
+      "Answers" : ["Congress", "Legislative", "President", "Executive", "the courts", "Judicial" ]
     },
     {
       "Question" : "What stops one branch of government from becoming too powerful?",
-      "Answers" : ["checks and balances", "separation of powers" ]
+      "Answers" : ["Checks and balances", "Separation of powers" ]
     },
     {
       "Question" : "Who is in charge of the executive branch?",
-      "Answers" : ["the President" ]
+      "Answers" : ["The President" ]
     },
     {
       "Question" : "Who makes federal laws?",
@@ -233,7 +293,7 @@
     },
     {
       "Question" : "What are the two parts of the U.S. Congress?",
-      "Answers" : ["the Senate and House (of Representatives)"]
+      "Answers" : ["The Senate and House (of Representatives)"]
     },
     {
       "Question" : "How many U.S. Senators are there?",
@@ -241,7 +301,7 @@
     },
     {
       "Question" : "We elect a U.S. Senator for how many years?",
-      "Answers" : ["six (6)"]
+      "Answers" : ["Six (6)"]
     },
     {
       "Question" : "Who is one of your state’s U.S. Senators now?",
@@ -300,11 +360,11 @@
     },
     {
       "Question" : "The House of Representatives has how many voting members?",
-      "Answers" : ["four hundred thirty-five (435)"]
+      "Answers" : ["Four hundred thirty-five (435)"]
     },
     {
       "Question" : "We elect a U.S. Representative for how many years?",
-      "Answers" : ["two (2)"]
+      "Answers" : ["Two (2)"]
     },
     {
       "Question" : "Name your U.S. Representative.",
@@ -840,15 +900,15 @@
     },
     {
       "Question" : "Who does a U.S. Senator represent?",
-      "Answers" : ["all people of the state"]
+      "Answers" : ["All people of the state he/she represents."]
     },
     {
       "Question" : "Why do some states have more Representatives than other states?",
-      "Answers" : ["(because of) the state’s population", "(because) they have more people", "(because) some states have more people"]
+      "Answers" : ["(because of) The state’s population", "(because) They have more people", "(because) Some states have more people"]
     },
     {
       "Question" : "We elect a President for how many years?",
-      "Answers" : ["four (4)"]
+      "Answers" : ["Four (4)"]
     },
     {
       "Question" : "In what month do we vote for President?",
@@ -864,27 +924,27 @@
     },
     {
       "Question" : "If the President can no longer serve, who becomes President?",
-      "Answers" : ["the Vice President"]
+      "Answers" : ["The Vice President"]
     },
     {
       "Question" : "If both the President and the Vice President can no longer serve, who becomes President?",
-      "Answers" : ["the Speaker of the House"]
+      "Answers" : ["The Speaker of the House"]
     },
     {
       "Question" : "Who is the Commander in Chief of the military?",
-      "Answers" : ["the President"]
+      "Answers" : ["The President"]
     },
     {
       "Question" : "Who signs bills to become laws?",
-      "Answers" : ["the President"]
+      "Answers" : ["The President"]
     },
     {
       "Question" : "Who vetoes bills?",
-      "Answers" : ["the President"]
+      "Answers" : ["The President"]
     },
     {
       "Question" : "What does the President’s Cabinet do?",
-      "Answers" : ["advises the President"]
+      "Answers" : ["Advises the President"]
     },
     {
       "Question" : "What are two Cabinet-level positions?",
@@ -896,15 +956,15 @@
     },
     {
       "Question" : "What does the judicial branch do?",
-      "Answers" : ["reviews laws", "explains laws", "resolves disputes (disagreements)", "decides if a law goes against the Constitution"]
+      "Answers" : ["Reviews laws", "Explains laws", "Resolves disputes (disagreements)", "Decides if a law goes against the Constitution"]
     },
     {
       "Question" : "What is the highest court in the United States?",
-      "Answers" : ["the Supreme Court"]
+      "Answers" : ["The Supreme Court"]
     },
     {
       "Question" : "How many justices are on the Supreme Court?",
-      "Answers" : ["nine (9)"]
+      "Answers" : ["Nine (9)"]
     },
     {
       "Question" : "Who is the Chief Justice of the United States now?",
@@ -912,16 +972,16 @@
     },
     {
       "Question" : "Under our Constitution, some powers belong to the federal government. What is one power of the federal government?",
-      "Answers" : ["to print money", "to declare war", "to create an army", "to make treaties"]
+      "Answers" : ["To print money", "To declare war", "To create an army", "To make treaties"]
     },
     {
       "Question" : "Under our Constitution, some powers belong to the states. What is one power of the states?",
-      "Answers" : ["provide schooling and education", "provide protection (police)", "provide safety (fire departments)", 
-                   "give a driver’s license", "approve zoning and land use"]
+      "Answers" : ["Provide schooling and education", "Provide protection (police)", "provide safety (fire departments)", 
+                   "Give a driver’s license", "Approve zoning and land use"]
     },
     {
       "Question" : "Who is the Governor of your state now?",
-      "Answers" : ["Gavin Newsom (California)"],
+      "Answers" : [],
       "Regional": true,
       "AL": ["Kay Ivey ( Alabama )"],
       "AK": ["Mike Dunleavy ( Alaska )"],
@@ -976,7 +1036,58 @@
     },
     {
       "Question" : "What is the capital of your state?",
-      "Answers" : ["Olympia (Washington)", "(Or yours or that DC/your territory is not a state)"]
+      "Regional": true,
+      "Answers" : [""],
+      "AL": ["Montgomery"],
+      "AK": ["Juneau"],
+      "AZ": ["Phoenix"],
+      "AR": ["Little Rock"],
+      "CA": ["Sacramento"],
+      "CO": ["Denver"],
+      "CT": ["Hartford"],
+      "DE": ["Dover"],
+      "FL": ["Tallahassee"],
+      "GA": ["Atlanta"],
+      "HI": ["Honolulu"],
+      "ID": ["Boise"],
+      "IL": ["Springfield"],
+      "IN": ["Indianapolis"],
+      "IA": ["Des Moines"],
+      "KS": ["Topeka"],
+      "KY": ["Frankfort"],
+      "LA": ["Baton Rouge"],
+      "ME": ["Augusta"],
+      "MD": ["Annapolis"],
+      "MA": ["Boston"],
+      "MI": ["Lansing"],
+      "MN": ["St. Paul"],
+      "MS": ["Jackson"],
+      "MO": ["Jefferson City"],
+      "MT": ["Helena"],
+      "NE": ["Lincoln"],
+      "NV": ["Carson City"],
+      "NH": ["Concord"],
+      "NJ": ["Trenton"],
+      "NM": ["Santa Fe"],
+      "NY": ["Albany"],
+      "NC": ["Raleigh"],
+      "ND": ["Bismarck"],
+      "OH": ["Columbus"],
+      "OK": ["Oklahoma City"],
+      "OR": ["Salem"],
+      "PA": ["Harrisburg"],
+      "RI": ["Providence"],
+      "SC": ["Columbia"],
+      "SD": ["Pierre"],
+      "TN": ["Nashville"],
+      "TX": ["Austin"],
+      "UT": ["Salt Lake City"],
+      "VT": ["Montpelier"],
+      "VA": ["Richmond"],
+      "WA": ["Olympia"],
+      "WV": ["Charleston"],
+      "WI": ["Madison"],
+      "WY": ["Cheyenne"],
     },
     {
       "Question" : "What are the two major political parties in the United States?",
@@ -997,28 +1108,28 @@
     },
     {
       "Question" : "What is one responsibility that is only for United States citizens?",
-      "Answers" : ["serve on a jury", "vote in a federal election"]
+      "Answers" : ["Serve on a jury", "Vote in a federal election"]
     },
     {
       "Question" : "Name one right only for United States citizens.",
-      "Answers" : ["vote in a federal election", "run for federal office"]
+      "Answers" : ["Vote in a federal election", "Run for federal office"]
     },
     {
       "Question" : "What are two rights of everyone living in the United States?",
-      "Answers" : ["freedom of expression", "freedom of speech", "freedom of assembly", "freedom to petition the government",
-                   "freedom of religion", "the right to bear arms"]
+      "Answers" : ["Freedom of expression", "Freedom of speech", "Freedom of assembly", "Freedom to petition the government",
+                   "Freedom of religion", "The right to bear arms"]
     },
     {
       "Question" : "What do we show loyalty to when we say the Pledge of Allegiance?",
-      "Answers" : ["the United States", "the flag"]
+      "Answers" : ["The United States.", "The flag"]
     },
     {
       "Question" : "What is one promise you make when you become a United States citizen?",
       "Answers" : ["give up loyalty to other countries", "defend the Constitution and laws of the United States",
-                   "obey the laws of the United States", "serve in the U.S. military (if needed)",
-                   "serve (do important work for) the nation (if needed)",
-                   "serve (do important work for) the nation (if needed)",
-                   "be loyal to the United States"]
+                   "Obey the laws of the United States", "Serve in the U.S. military (if needed)",
+                   "Serve (do important work for) the nation (if needed)",
+                   "Serve (do important work for) the nation (if needed)",
+                   "Be loyal to the United States"]
     },
     {
       "Question" : "How old do citizens have to be to vote for President?",
@@ -1026,11 +1137,11 @@
     },
     {
       "Question" : "What are two ways that Americans can participate in their democracy?",
-      "Answers" : ["vote", "join a political party", "help with a campaign", "join a civic group",
-                   "join a community group", "give an elected official your opinion on an issue",
-                   "call Senators and Representatives", "publicly support or oppose an issue or policy",
-                   "publicly support or oppose an issue or policy", "run for office",
-                   "write to a newspaper"]
+      "Answers" : ["Vote", "join a political party", "Help with a campaign", "Join a civic group",
+                   "Join a community group", "Give an elected official your opinion on an issue",
+                   "Call Senators and Representatives", "Publicly support or oppose an issue or policy",
+                   "Publicly support or oppose an issue or policy", "Run for office",
+                   "Qrite to a newspaper"]
     },
     {
       "Question" : "When is the last day you can send in federal income tax forms?",
@@ -1038,11 +1149,11 @@
     },
     {
       "Question" : "When must all men register for the Selective Service?",
-      "Answers" : ["at age eighteen (18)", "between eighteen (18) and twenty-six (26)"]
+      "Answers" : ["At age eighteen (18)", "Between eighteen (18) and twenty-six (26)"]
     },
     {
       "Question" : "What is one reason colonists came to America?",
-      "Answers" : ["freedom", "political liberty", "religious freedom", "economic opportunity", "practice their religion", "escape persecution"]
+      "Answers" : ["Freedom", "Political liberty", "Religious freedom", "Economic opportunity", "Practice their religion", "Escape persecution"]
     },
     {
       "Question" : "Who lived in America before the Europeans arrived?",
@@ -1050,13 +1161,13 @@
     },
     {
       "Question" : "What group of people was taken to America and sold as slaves?",
-      "Answers" : ["Africans", "people from Africa"]
+      "Answers" : ["Africans", "People from Africa"]
     },
     {
       "Question" : "Why did the colonists fight the British?",
-      "Answers" : ["because of high taxes (taxation without representation)", 
-                   "because the British army stayed in their houses (boarding, quartering)", 
-                   "because they didn’t have self-government"]
+      "Answers" : ["Because of high taxes (taxation without representation)", 
+                   "Because the British army stayed in their houses (boarding, quartering)", 
+                   "Because they didn’t have self-government"]
     },
     {
       "Question" : "Who wrote the Declaration of Independence?",
@@ -1087,9 +1198,9 @@
     },
     {
       "Question" : "What is one thing Benjamin Franklin is famous for?",
-      "Answers" : ["U.S. diplomat", "oldest member of the Constitutional Convention", 
-                   "first Postmaster General of the United States", "writer of 'Poor Richard’s Almanac'",
-                   "started the first free libraries"]
+      "Answers" : ["U.S. diplomat", "Oldest member of the Constitutional Convention", 
+                   "First Postmaster General of the United States", "Writer of 'Poor Richard’s Almanac'",
+                   "Started the first free libraries"]
     },
     {
       "Question" : "Who is the 'Father of Our Country'?",
@@ -1109,24 +1220,24 @@
     },
     {
       "Question" : "Name the U.S. war between the North and the South.",
-      "Answers" : ["the Civil War", "the War between the States"]
+      "Answers" : ["The Civil War", "The War between the States"]
     },
     {
       "Question" : "Name one problem that led to the Civil War.",
-      "Answers" : ["slavery", "economic reasons", "states’rights"]
+      "Answers" : ["Slavery", "Economic reasons", "States’ rights"]
     },
     {
       "Question" : "What was one important thing that Abraham Lincoln did?",
-      "Answers" : ["freed the slaves (Emancipation Proclamation)", "saved (or preserved) the Union",
-                   "led the United States during the Civil War"]
+      "Answers" : ["Freed the slaves (Emancipation Proclamation)", "Saved (or preserved) the Union",
+                   "Led the United States during the Civil War"]
     },
     {
       "Question" : "What did the Emancipation Proclamation do?",
-      "Answers" : ["freed the slaves", "freed slaves in the Confederacy", "freed slaves in the Confederate states", "freed slaves in most Southern states"]
+      "Answers" : ["Freed the slaves", "Freed slaves in the Confederacy", "Freed slaves in the Confederate states", "Freed slaves in most Southern states"]
     },
     {
       "Question" : "What did Susan B. Anthony do?",
-      "Answers" : ["fought for women’s rights", "fought for civil rights"]
+      "Answers" : ["Fought for women’s rights", "Fought for civil rights"]
     },
     {
       "Question" : "Name one war fought by the United States in the 1900s.",
@@ -1154,11 +1265,11 @@
     },
     {
       "Question" : "What movement tried to end racial discrimination?",
-      "Answers" : ["civil rights (movement)"]
+      "Answers" : ["Civil rights (movement)"]
     },
     {
       "Question" : "What did Martin Luther King, Jr. do?",
-      "Answers" : ["fought for civil rights", "worked for equality for all Americans"]
+      "Answers" : ["Fought for civil rights", "Worked for equality for all Americans"]
     },
     {
       "Question" : "What major event happened on September 11, 2001, in the United States?",
@@ -1206,8 +1317,8 @@
     },
     {
       "Question" : "Why does the flag have 50 stars?",
-      "Answers" : ["because there is one star for each state", "because each star represents a state",
-                   "because there are 50 states"]
+      "Answers" : ["Because there is one star for each state", "Because each star represents a state",
+                   "Because there are 50 states"]
     },
     {
       "Question" : "What is the name of the national anthem?",
@@ -1284,6 +1395,9 @@
 
   function hideModal() {
     modalBackground.style.display = "none";
+    window.visualViewport.scale
+    window.scrollTo(0,0);
+
   }
 
   function getStateCode() {
@@ -1320,6 +1434,8 @@
         }
         answers += "</ul>";
               document.getElementById('answer-text').innerHTML = answers;
+              document.getElementById('answer-text').scrollIntoView();
+
           }
 
           i += 1;
@@ -1334,15 +1450,12 @@
     advance();
   };
 
+
   window.addEventListener('pointerdown', function() {
     advance();
   }, false);
 
-  window.addEventListener('pointermove', function () {
-    elem = document.getElementById('answer-text');
-    elem.scrollIntoView();
-  });
-    </script>
+  </script>
 
   </body>
 </html>
