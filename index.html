@@ -3,6 +3,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>US Citizenship Civics Exam (2008 edition)</title>
     <style>
+    html {
+        scroll-behavior: smooth;
+      }
     ::-webkit-scrollbar {
       -webkit-appearance: none; 
       width: 10px; height: 10px; 
@@ -1329,9 +1332,14 @@
     advance();
   };
 
-  //window.addEventListener('pointerdown', function() {
-    //advance();
-  //}, false);
+  window.addEventListener('pointerdown', function() {
+    advance();
+  }, false);
+
+  window.addEventListener('pointermove', function () {
+    elem = document.getElementById('answer-text');
+    elem.scrollIntoView();
+  });
     </script>
 
   </body>
