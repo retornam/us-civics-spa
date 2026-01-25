@@ -1,13 +1,15 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>US Citizenship Civics Exam (2008 edition)</title>
     <style>
       /* Base styles */
       html {
         scroll-behavior: smooth;
         overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
       }
 
       ::-webkit-scrollbar {
@@ -28,6 +30,8 @@
         color: #0A3161;
         background-color: #B31942;
         margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
       }
 
       h2 {
@@ -62,6 +66,7 @@
       /* Question styles */
       #question {
         background-color: #B31942;
+        min-height: 100px;
       }
 
       /* Progress and Seperator styles */
@@ -73,6 +78,7 @@
       /* Answer styles */
       #answer {
         background-color: #0A3161;
+        min-height: 100px;
       }
 
       /* Styles for the modal background */
@@ -86,35 +92,50 @@
         background-color: rgba(0, 0, 0, 0.5);
         justify-content: center;
         align-items: center;
+        z-index: 9999;
+      }
+
+      .modal-background.show {
+        display: flex;
       }
 
       /* Styles for the modal container */
       .modal-container {
         background-color: white;
-        padding: 100px;
+        padding: 40px;
         border-radius: 5px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-        max-width: 50%;
+        max-width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
       }
+
       /* Media Queries for responsiveness */
       /* iPad and smaller devices */
       @media (max-width: 1024px) {
         .modal-container {
-          max-width: 80%; /* Adjust the modal width for smaller devices */
+          max-width: 80%;
+          padding: 30px;
         }
       }
 
       /* iPhone and smaller devices */
       @media (max-width: 768px) {
         .modal-container {
-          max-width: 95%; /* Adjust the modal width for iPhone and smaller devices */
+          max-width: 90%;
+          padding: 20px;
+        }
+        
+        #header, #question, #progress, #seperator, #answer {
+          font-size: 1.4em;
         }
       }
 
       /* Desktop and larger devices */
       @media (min-width: 1200px) {
         .modal-container {
-          max-width: 50%; /* Adjust the modal width for desktop and larger devices */
+          max-width: 50%;
+          padding: 100px;
         }
       }
 
@@ -132,19 +153,28 @@
 
       .input-field input[type="text"] {
         width: 100%;
-        padding: 10px;
+        padding: 15px;
         border: 1px solid #ccc;
         border-radius: 3px;
         margin-bottom: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
       }
 
       .input-field button {
-        padding: 10px 20px;
+        padding: 15px 30px;
         background-color: #007bff;
         color: white;
         border: none;
         border-radius: 3px;
         cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        touch-action: manipulation;
+      }
+
+      .input-field button:active {
+        background-color: #0056b3;
       }
 
       /* Media Queries for responsiveness */
@@ -168,8 +198,6 @@
         .container {
           max-width: 100%;
         }
-
-        /* Adjust other styles as needed for smaller devices */
       }
 
     </style>
@@ -184,7 +212,7 @@
           <label for="stateCodeInput">Enter State Short Code:</label>
           <input type="text" id="stateCodeInput" maxlength="2" placeholder="e.g. CA" />
           <div></div>
-          <button onclick="getStateCode()">Submit</button>
+          <button id="submitButton">Submit</button>
         </div>
         
       </div>
@@ -304,59 +332,264 @@
       "Answers" : ["Six (6)"]
     },
     {
-      "Question" : "Who is one of your state’s U.S. Senators now?",
+      "Question" : "Who is one of your state's U.S. Senators now?",
       "Answers" : [],
       "Regional": true,
-      "AL": ["Shelby, Richard C. (Alabama)", "Tuberville, Tommy (Alabama)"],
-      "AK": ["Murkowski, Lisa (Alaska)", "Sullivan, Dan (Alaska)"],
-      "AZ": ["Kelly, Mark (Arizona)", "Sinema, Kyrsten (Arizona)"],
-      "AR": ["Boozman, John (Arkansas)", "Cotton, Tom (Arkansas)"],
-      "CA": ["Feinstein, Dianne (California)", "Padilla, Alex (California)"],
-      "CO": ["Bennet, Michael F. (Colorado)", "Hickenlooper, John W. (Colorado)"],
-      "CT": ["Blumenthal, Richard (Connecticut)", "Murphy, Christopher (Connecticut)"],
-      "DE": ["Carper, Thomas R. (Delaware)", "Coons, Christopher A. (Delaware)"],
-      "FL": ["Rubio, Marco (Florida)", "Scott, Rick (Florida)"],
-      "GA": ["Ossoff, Jon (Georgia)", "Warnock, Raphael G. (Georgia)"],
-      "HI": ["Hirono, Mazie K. (Hawaii)", "Schatz, Brian (Hawaii)"],
-      "ID": ["Crapo, Mike (Idaho)", "Risch, James E. (Idaho)"],
-      "IL": ["Duckworth, Tammy (Illinois)", "Durbin, Richard J. (Illinois)"],
-      "IN": ["Braun, Mike (Indiana)", "Young, Todd (Indiana)"],
-      "IA": ["Ernst, Joni (Iowa)", "Grassley, Chuck (Iowa)"],
-      "KS": ["Marshall, Roger (Kansas)", "Moran, Jerry (Kansas)"],
-      "KY": ["McConnell, Mitch (Kentucky)", "Paul, Rand (Kentucky)"],
-      "LA": ["Cassidy, Bill (Louisiana)", "Kennedy, John (Louisiana)"],
-      "ME": ["Collins, Susan M. (Maine)", "King, Angus S., Jr. (Maine)"],
-      "MD": ["Cardin, Benjamin L. (Maryland)", "Van Hollen, Chris (Maryland)"],
-      "MA": ["Markey, Edward J. (Massachusetts)", "Warren, Elizabeth (Massachusetts)"],
-      "MI": ["Peters, Gary C. (Michigan)", "Stabenow, Debbie (Michigan)"],
-      "MN": ["Klobuchar, Amy (Minnesota)", "Smith, Tina (Minnesota)"],
-      "MS": ["Hyde-Smith, Cindy (Mississippi)", "Wicker, Roger F. (Mississippi)"],
-      "MO": ["Blunt, Roy (Missouri)", "Hawley, Josh (Missouri)"],
-      "MT": ["Daines, Steve (Montana)", "Tester, Jon (Montana)"],
-      "NE": ["Fischer, Deb (Nebraska)", "Sasse, Ben (Nebraska)"],
-      "NV": ["Cortez Masto, Catherine (Nevada)", "Rosen, Jacky (Nevada)"],
-      "NH": ["Hassan, Margaret Wood (New Hampshire)", "Shaheen, Jeanne (New Hampshire)"],
-      "NJ": ["Booker, Cory A. (New Jersey)", "Menendez, Robert (New Jersey)"],
-      "NM": ["Heinrich, Martin (New Mexico)", "Luján, Ben Ray (New Mexico)"],
-      "NY": ["Gillibrand, Kirsten E. (New York)", "Schumer, Charles E. (New York)"],
-      "NC": ["Burr, Richard (North Carolina)", "Tillis, Thom (North Carolina)"],
-      "ND": ["Cramer, Kevin (North Dakota)", "Hoeven, John (North Dakota)"],
-      "OH": ["Brown, Sherrod (Ohio)", "Portman, Rob (Ohio)"],
-      "OK": ["Inhofe, James M. (Oklahoma)", "Lankford, James (Oklahoma)"],
-      "OR": ["Merkley, Jeff (Oregon)", "Wyden, Ron (Oregon)"],
-      "PA": ["Casey, Robert P., Jr. (Pennsylvania)", "Toomey, Patrick J. (Pennsylvania)"],
-      "RI": ["Reed, Jack (Rhode Island)", "Whitehouse, Sheldon (Rhode Island)"],
-      "SC": ["Graham, Lindsey (South Carolina)", "Scott, Tim (South Carolina)"],
-      "SD": ["Rounds, Mike (South Dakota)", "Thune, John (South Dakota)"],
-      "TN": ["Blackburn, Marsha (Tennessee)", "Hagerty, Bill (Tennessee)"],
-      "TX": ["Cornyn, John (Texas)", "Cruz, Ted (Texas)"],
-      "UT": ["Lee, Mike (Utah)", "Romney, Mitt (Utah)"],
-      "VT": ["Leahy, Patrick J. (Vermont)", "Sanders, Bernard (Vermont)"],
-      "VA": ["Kaine, Tim (Virginia)", "Warner, Mark R. (Virginia)"],
-      "WA": ["Cantwell, Maria (Washington)", "Murray, Patty (Washington)"],
-      "WV": ["Capito, Shelley Moore (West Virginia)", "Manchin, Joe, III (West Virginia)"],
-      "WI": ["Baldwin, Tammy (Wisconsin)", "Johnson, Ron (Wisconsin)"],
-      "WY": ["Barrasso, John (Wyoming)", "Lummis, Cynthia M. (Wyoming)"],
+      "AL": 
+        [
+          "Alabama         Britt, Katie Boyd",
+          "Alabama         Tuberville, Tommy",
+      ],
+      "AK": 
+        [
+          "Alaska          Murkowski, Lisa",
+          "Alaska          Sullivan, Dan",
+      ],
+      "AZ": 
+        [
+          "Arizona         Gallego, Ruben",
+          "Arizona         Kelly, Mark",
+      ],
+      "AR": 
+        [
+          "Arkansas        Boozman, John",
+        " Arkansas        Cotton, Tom",
+      ],
+      "CA": 
+        [
+          "California      Padilla, Alex",
+          "California      Schiff, Adam B.",
+      ],
+      "CO": 
+        [
+          "Colorado        Bennet, Michael F.",
+          "Colorado        Hickenlooper, John W.",
+        ],
+      "CT": 
+        [
+          "Connecticut     Blumenthal, Richard",
+          "Connecticut     Murphy, Christopher",
+        ],
+      "DE": 
+        [
+          "Delaware        Blunt Rochester, Lisa",
+          "Delaware        Coons, Christopher A.",
+      ],
+      "FL": 
+        [
+          "Florida         Moody, Ashley",
+          "Florida         Scott, Rick",
+      ],
+      "GA": 
+        [
+          "Georgia         Ossoff, Jon",
+          "Georgia         Warnock, Raphael G.",
+      ],
+      "HI": 
+        [
+          "Hawaii          Hirono, Mazie K.",
+          "Hawaii          Schatz, Brian",
+      ],
+      "ID": 
+        [
+          "Idaho           Crapo, Mike",
+          "Idaho           Risch, James E.",
+        ],
+      "IL": 
+        [
+          "Illinois        Duckworth, Tammy",
+          "Illinois        Durbin, Richard J.",
+        ],
+      "IN": 
+        [
+          "Indiana         Banks, Jim",
+          "Indiana         Young, Todd",
+        ],
+      "IA": 
+        [
+          "Iowa            Ernst, Joni",
+          "Iowa            Grassley, Chuck",
+        ],
+      "KS": 
+        [
+          "Kansas          Marshall, Roger",
+          "Kansas          Moran, Jerry",
+        ],
+      "KY": 
+        [
+          "Kentucky        McConnell, Mitch",
+          "Kentucky        Paul, Rand",
+        ],
+      "LA": 
+        [
+          "Louisiana       Cassidy, Bill",
+          "Louisiana       Kennedy, John",
+        ],
+      "ME": 
+        [
+          "Maine           Collins, Susan M.",
+          "Maine           King, Angus S., Jr.",
+        ],
+      "MD": 
+        [
+          "Maryland        Alsobrooks, Angela D.",
+          "Maryland        Van Hollen, Chris",
+        ],
+      "MA": 
+        [
+          "Massachusetts   Markey, Edward J.",
+          "Massachusetts   Warren, Elizabeth",
+        ],
+      "MI": 
+      [
+          "Michigan        Peters, Gary C.",
+          "Michigan        Slotkin, Elissa",
+      ],
+      "MN": 
+        [
+          "Minnesota       Klobuchar, Amy",
+          "Minnesota       Smith, Tina",
+        ],
+      "MS": 
+        [
+          "Mississippi     Hyde-Smith, Cindy",
+          "Mississippi     Wicker, Roger F.",
+        ],
+      "MO": 
+        [
+          "Missouri        Hawley, Josh",
+          "Missouri        Schmitt, Eric",
+        ],
+      "MT": 
+        [
+          "Montana         Daines, Steve",
+          "Montana         Sheehy, Tim",
+        ],
+      "NE": 
+        [
+          "Nebraska        Fischer, Deb",
+          "Nebraska        Ricketts, Pete",
+
+        ],
+      "NV": 
+        [
+          "Nevada          Cortez Masto, Catherine",
+          "Nevada          Rosen, Jacky",
+        ],
+      "NH": 
+        [
+          "New Hampshire   Hassan, Margaret Wood",
+          "New Hampshire   Shaheen, Jeanne",
+        ],
+      "NJ": 
+        [
+          "New Jersey      Booker, Cory A.",
+          "New Jersey      Kim, Andy",
+
+        ],
+      "NM": 
+        [
+          "New Mexico      Heinrich, Martin",
+          "New Mexico      Luján, Ben Ray",
+        ],
+      "NY": 
+        [
+          "New York        Gillibrand, Kirsten E.",
+          "New York        Schumer, Charles E.",
+        ],
+      "NC": 
+        [
+          "North Carolina  Budd, Ted",
+          "North Carolina  Tillis, Thom",
+        ],
+      "ND": 
+        [
+          "North Dakota    Cramer, Kevin",
+          "North Dakota    Hoeven, John"
+        ],
+      "OH": 
+        [
+          "Ohio            Husted, Jon",
+          "Ohio            Moreno, Bernie",
+        ],
+      "OK": 
+        [
+          "Oklahoma        Lankford, James",
+          "Oklahoma        Mullin, Markwayne",
+        ],
+      "OR": 
+        [
+          "Oregon          Merkley, Jeff",
+          "Oregon          Wyden, Ron",
+        ],
+      "PA": 
+        [
+          "Pennsylvania    Fetterman, John",
+          "Pennsylvania    McCormick, David",
+        ],
+      "RI": 
+        [
+          "Rhode Island    Reed, Jack",
+          "Rhode Island    Whitehouse, Sheldon",
+        ],
+      "SC": 
+        [
+          "South Carolina  Graham, Lindsey",
+          "South Carolina  Scott, Tim",
+        ],
+      "SD": 
+        [
+          "South Dakota    Rounds, Mike",
+          "South Dakota    Thune, John",
+        ],
+      "TN": 
+        [
+          "Tennessee       Blackburn, Marsha",
+          "Tennessee       Hagerty, Bill",
+        ],
+      "TX": 
+        [
+          "Texas           Cornyn, John",
+          "Texas           Cruz, Ted",
+        ],
+      "UT": 
+        [
+          "Utah            Curtis, John R.",
+          "Utah            Lee, Mike",
+
+        ],
+      "VT": 
+        [
+          "Vermont         Sanders, Bernard",
+          "Vermont         Welch, Peter",
+        ],
+      "VA": 
+        [
+          "Virginia        Kaine, Tim",
+          "Virginia        Warner, Mark R.",
+        ],
+      "WA": 
+        [
+          "Washington      Cantwell, Maria",
+          "Washington      Murray, Patty",
+        ],
+      "WV": 
+        [
+          "West Virginia   Capito, Shelley Moore",
+          "West Virginia   Justice, James C."
+        ],
+      "WI": 
+        [
+
+          "Wisconsin       Baldwin, Tammy",
+          "Wisconsin       Johnson, Ron",
+
+        ],
+      "WY": 
+        [
+          "Wyoming         Barrasso, John",
+          "Wyoming         Lummis, Cynthia M.",
+        ],
     },
     {
       "Question" : "The House of Representatives has how many voting members?",
@@ -371,532 +604,553 @@
       "Answers" : [],
       "Regional": true,
       "AL": [
-                "Alabama 1st Carl, Jerry",
-                "Alabama 2nd Moore, Barry",
-                "Alabama 3rd Rogers, Mike",
-                "Alabama 4th Aderholt, Robert",
-                "Alabama 5th Strong, Dale",
-                "Alabama 6th Palmer, Gary",
-                "Alabama 7th Sewell, Terri"
+                "Moore, Barry                              Alabama 1st",
+                "Figures, Shomari                          Alabama 2nd",
+                "Rogers, Mike                              Alabama 3rd",
+                "Aderholt, Robert                          Alabama 4th",
+                "Strong, Dale                              Alabama 5th",
+                "Palmer, Gary                              Alabama 6th",
+                "Sewell, Terri                             Alabama 7th",
             ],
             "AK": [
-                "Alaska At Large Peltola, Mary"
+                "Begich, Nicholas                          Alaska At Large"
             ],
             "AS": [
-                "American Samoa Delegate Radewagen, Aumua Amata"
+                "Radewagen, Aumua Amata                    American Samoa Delegate",
             ],
             "AZ": [
-                "Arizona 1st Schweikert, David",
-                "Arizona 2nd Crane, Elijah",
-                "Arizona 3rd Gallego, Ruben",
-                "Arizona 4th Stanton, Greg",
-                "Arizona 5th Biggs, Andy",
-                "Arizona 6th Ciscomani, Juan",
-                "Arizona 7th Grijalva, Raul",
-                "Arizona 8th Lesko, Debbie",
-                "Arizona 9th Gosar, Paul"
+                "Schweikert, David                         Arizona 1st",
+                "Crane, Elijah                             Arizona 2nd",
+                "Ansari, Yassamin                          Arizona 3rd",
+                "Stanton, Greg                             Arizona 4th",
+                "Biggs, Andy                               Arizona 5th",
+                "Ciscomani, Juan                           Arizona 6th",
+                "Grijalva, Adelita                         Arizona 7th",
+                "Hamadeh, Abraham                          Arizona 8th",
+                "Gosar, Paul                               Arizona 9th",
               ],
             "AR": [
-                "Arkansas 1st Crawford, Eric",
-                "Arkansas 2nd Hill, J.",
-                "Arkansas 3rd Womack, Steve",
-                "Arkansas 4th Westerman, Bruce"
+                "Crawford, Eric                            Arkansas 1st",
+                "Hill, J.                                  Arkansas 2nd",
+                "Womack, Steve                             Arkansas 3rd",
+                "Westerman, Bruce                          Arkansas 4th",
             ],
             "CA": [
-                "California 1st LaMalfa, Doug",
-                "California 2nd Huffman, Jared",
-                "California 3rd Kiley, Kevin",
-                "California 4th Thompson, Mike",
-                "California 5th McClintock, Tom",
-                "California 6th Bera, Ami",
-                "California 7th Matsui, Doris",
-                "California 8th Garamendi, John",
-                "California 9th Harder, Josh",
-                "California 10th DeSaulnier, Mark",
-                "California 11th Pelosi, Nancy",
-                "California 12th Lee, Barbara",
-                "California 13th Duarte, John",
-                "California 14th Swalwell, Eric",
-                "California 15th Mullin, Kevin",
-                "California 16th Eshoo, Anna",
-                "California 17th Khanna, Ro",
-                "California 18th Lofgren, Zoe",
-                "California 19th Panetta, Jimmy",
-                "California 20th McCarthy, Kevin",
-                "California 21st Costa, Jim",
-                "California 22nd Valadao, David",
-                "California 23rd Obernolte, Jay",
-                "California 24th Carbajal, Salud",
-                "California 25th Ruiz, Raul",
-                "California 26th Brownley, Julia",
-                "California 27th Garcia, Mike",
-                "California 28th Chu, Judy",
-                "California 29th Cardenas, Tony",
-                "California 30th Schiff, Adam",
-                "California 31st Napolitano, Grace",
-                "California 32nd Sherman, Brad",
-                "California 33rd Aguilar, Pete",
-                "California 34th Gomez, Jimmy",
-                "California 35th Torres, Norma",
-                "California 36th Lieu, Ted",
-                "California 37th Kamlager-Dove, Sydney",
-                "California 38th Sanchez, Linda",
-                "California 39th Takano, Mark",
-                "California 40th Kim, Young",
-                "California 41st Calvert, Ken",
-                "California 42nd Garcia, Robert",
-                "California 43rd Waters, Maxine",
-                "California 44th Barragan, Nanette",
-                "California 45th Steel, Michelle",
-                "California 46th Correa, J.",
-                "California 47th Porter, Katie",
-                "California 48th Issa, Darrell",
-                "California 49th Levin, Mike",
-                "California 50th Peters, Scott",
-                "California 51st Jacobs, Sara",
-                "California 52nd Vargas, Juan",
+                "LaMalfa, Doug- Vacancy                    California 1st",
+                "Huffman, Jared                            California 2nd",
+                "Kiley, Kevin                              California 3rd",
+                "Thompson, Mike                            California 4th",
+                "McClintock, Tom                           California 5th",
+                "Bera, Ami                                 California 6th",
+                "Matsui, Doris                             California 7th",
+                "Garamendi, John                           California 8th",
+                "Harder, Josh                              California 9th",
+                "DeSaulnier, Mark                          California 10th",
+                "Pelosi, Nancy                             California 11th",
+                "Simon, Lateefah                           California 12th",
+                "Gray, Adam                                California 13th",
+                "Swalwell, Eric                            California 14th",
+                "Mullin, Kevin                             California 15th",
+                "Liccardo, Sam                             California 16th",
+                "Khanna, Ro                                California 17th",
+                "Lofgren, Zoe                              California 18th",
+                "Panetta, Jimmy                            California 19th",
+                "Fong, Vince                               California 20th",
+                "Costa, Jim                                California 21st",
+                "Valadao, David                            California 22nd",
+                "Obernolte, Jay                            California 23rd",
+                "Carbajal, Salud                           California 24th",
+                "Ruiz, Raul                                California 25th",
+                "Brownley, Julia                           California 26th",
+                "Whitesides, George                        California 27th",
+                "Chu, Judy                                 California 28th",
+                "Rivas, Luz                                California 29th",
+                "Friedman, Laura                           California 30th",
+                "Cisneros, Gilbert                         California 31st",
+                "Sherman, Brad                             California 32nd",
+                "Aguilar, Pete                             California 33rd",
+                "Gomez, Jimmy                              California 34th",
+                "Torres, Norma                             California 35th",
+                "Lieu, Ted                                 California 36th",
+                "Kamlager-Dove, Sydney                     California 37th",
+                "Sanchez, Linda                            California 38th",
+                "Takano, Mark                              California 39th",
+                "Kim, Young                                California 40th",
+                "Calvert, Ken                              California 41st",
+                "Garcia, Robert                            California 42nd",
+                "Waters, Maxine                            California 43rd",
+                "Barragan, Nanette                         California 44th",
+                "Tran, Derek                               California 45th",
+                "Correa, J.                                California 46th",
+                "Min, Dave                                 California 47th",
+                "Issa, Darrell                             California 48th",
+                "Levin, Mike                               California 49th",
+                "Peters, Scott                             California 50th",
+                "Jacobs, Sara                              California 51st",
+                "Vargas, Juan                              California 52nd",
             ],
             "CO": [
-                "Colorado 1st DeGette, Diana",
-                "Colorado 2nd Neguse, Joe",
-                "Colorado 3rd Boebert, Lauren",
-                "Colorado 4th Buck, Ken",
-                "Colorado 5th Lamborn, Doug",
-                "Colorado 6th Crow, Jason",
-                "Colorado 7th Pettersen, Brittany",
-                "Colorado 8th Caraveo, Yadira"
+                "DeGette, Diana                            Colorado 1st",
+                "Neguse, Joe                               Colorado 2nd",
+                "Hurd, Jeff                                Colorado 3rd",
+                "Boebert, Lauren                           Colorado 4th",
+                "Crank, Jeff                               Colorado 5th",
+                "Crow, Jason                               Colorado 6th",
+                "Pettersen, Brittany                       Colorado 7th",
+                "Evans, Gabe                               Colorado 8th",
             ],
             "CT": [
-                "Connecticut 1st Larson, John",
-                "Connecticut 2nd Courtney, Joe",
-                "Connecticut 3rd DeLauro, Rosa",
-                "Connecticut 4th Himes, James",
-                "Connecticut 5th Hayes, Jahana"
+                "Larson, John                              Connecticut 1st",
+                "Courtney, Joe                             Connecticut 2nd",
+                "DeLauro, Rosa                             Connecticut 3rd",
+                "Himes, James                              Connecticut 4th",
+                "Hayes, Jahana                             Connecticut 5th",
               ],
             "DE": [
-                "Delaware At Large Blunt Rochester, Lisa"
+                "McBride, Sarah                            Delaware At Large",
               ],
             "FL": [
-                "Florida 1st Gaetz, Matt",
-                "Florida 2nd Dunn, Neal",
-                "Florida 3rd Cammack, Kat",
-                "Florida 4th Bean, Aaron",
-                "Florida 5th Rutherford, John",
-                "Florida 6th Waltz, Michael",
-                "Florida 7th Mills, Cory",
-                "Florida 8th Posey, Bill",
-                "Florida 9th Soto, Darren",
-                "Florida 10th Frost, Maxwell",
-                "Florida 11th Webster, Daniel",
-                "Florida 12th Bilirakis, Gus",
-                "Florida 13th Luna, Anna Paulina",
-                "Florida 14th Castor, Kathy",
-                "Florida 15th Lee, Laurel",
-                "Florida 16th Buchanan, Vern",
-                "Florida 17th Steube, W.",
-                "Florida 18th Franklin, C.",
-                "Florida 19th Donalds, Byron",
-                "Florida 20th Cherfilus-McCormick, Sheila",
-                "Florida 21st Mast, Brian",
-                "Florida 22nd Frankel, Lois",
-                "Florida 23rd Moskowitz, Jared",
-                "Florida 24th Wilson, Frederica",
-                "Florida 25th Wasserman Schultz, Debbie",
-                "Florida 26th Diaz-Balart, Mario",
-                "Florida 27th Salazar, Maria",
-                "Florida 28th Gimenez, Carlos",
+                "Patronis, Jimmy                           Florida 1st",
+                "Dunn, Neal                                Florida 2nd",
+                "Cammack, Kat                              Florida 3rd",
+                "Bean, Aaron                               Florida 4th",
+                "Rutherford, John                          Florida 5th",
+                "Fine, Randy                               Florida 6th",
+                "Mills, Cory                               Florida 7th",
+                "Haridopolos, Mike                         Florida 8th",
+                "Soto, Darren                              Florida 9th",
+                "Frost, Maxwell                            Florida 10th",
+                "Webster, Daniel                           Florida 11th",
+                "Bilirakis, Gus                            Florida 12th",
+                "Luna, Anna Paulina                        Florida 13th",
+                "Castor, Kathy                             Florida 14th",
+                "Lee, Laurel                               Florida 15th",
+                "Buchanan, Vern                            Florida 16th",
+                "Steube, W.                                Florida 17th",
+                "Franklin, Scott                           Florida 18th",
+                "Donalds, Byron                            Florida 19th",
+                "Cherfilus-McCormick, Sheila               Florida 20th",
+                "Mast, Brian                               Florida 21st",
+                "Frankel, Lois                             Florida 22nd",
+                "Moskowitz, Jared                          Florida 23rd",
+                "Wilson, Frederica                         Florida 24th",
+                "Wasserman Schultz, Debbie                 Florida 25th",
+                "Diaz-Balart, Mario                        Florida 26th",
+                "Salazar, Maria                            Florida 27th",
+                "Gimenez, Carlos                           Florida 28th",
               ],
             "GA": [
-                "Georgia 1st Carter, Earl",
-                "Georgia 2nd Bishop, Sanford",
-                "Georgia 3rd Ferguson, A.",
-                "Georgia 4th Johnson, Henry",
-                "Georgia 5th Williams, Nikema",
-                "Georgia 6th McCormick, Richard",
-                "Georgia 7th McBath, Lucy",
-                "Georgia 8th Scott, Austin",
-                "Georgia 9th Clyde, Andrew",
-                "Georgia 10th Collins, Mike",
-                "Georgia 11th Loudermilk, Barry",
-                "Georgia 12th Allen, Rick",
-                "Georgia 13th Scott, David",
-                "Georgia 14th Greene, Marjorie",
+                "Carter, Earl                              Georgia 1st",
+                "Bishop, Sanford                           Georgia 2nd",
+                "Jack, Brian                               Georgia 3rd",
+                "Johnson, Henry                            Georgia 4th",
+                "Williams, Nikema                          Georgia 5th",
+                "McBath, Lucy                              Georgia 6th",
+                "McCormick, Richard                        Georgia 7th",
+                "Scott, Austin                             Georgia 8th",
+                "Clyde, Andrew                             Georgia 9th",
+                "Collins, Mike                             Georgia 10th",
+                "Loudermilk, Barry                         Georgia 11th",
+                "Allen, Rick                               Georgia 12th",
+                "Scott, David                              Georgia 13th",
+                "Greene, Marjorie Taylor- Vacancy          Georgia 14th",
+              ],
+            "GU": [
+              "Moylan, James                             Guam Delegate",
+              ],
+            "HI": [
+              "Case, Ed                                  Hawaii 1st",
+              "Tokuda, Jill                              Hawaii 2nd",
               ],
             "ID": [
-                "Idaho 1st Fulcher, Russ",
-                "Idaho 2nd Simpson, Michael"
+                "Fulcher, Russ                             Idaho 1st",
+                "Simpson, Michael                          Idaho 2nd"
               ],
             "IL": [
-                "Illinois 1st Jackson, Jonathan",
-                "Illinois 2nd Kelly, Robin",
-                "Illinois 3rd Ramirez, Delia",
-                "Illinois 4th Garcia, Jesus",
-                "Illinois 5th Quigley, Mike",
-                "Illinois 6th Casten, Sean",
-                "Illinois 7th Davis, Danny",
-                "Illinois 8th Krishnamoorthi, Raja",
-                "Illinois 9th Schakowsky, Janice",
-                "Illinois 10th Schneider, Bradley",
-                "Illinois 11th Foster, Bill",
-                "Illinois 12th Bost, Mike",
-                "Illinois 13th Budzinski, Nikki",
-                "Illinois 14th Underwood, Lauren",
-                "Illinois 15th Miller, Mary",
-                "Illinois 16th LaHood, Darin",
-                "Illinois 17th Sorensen, Eric",
+                "Jackson, Jonathan                         Illinois 1st",
+                "Kelly, Robin                              Illinois 2nd",
+                "Ramirez, Delia                            Illinois 3rd",
+                "Garcia, Jesus                             Illinois 4th",
+                "Quigley, Mike                             Illinois 5th",
+                "Casten, Sean                              Illinois 6th",
+                "Davis, Danny                              Illinois 7th",
+                "Krishnamoorthi, Raja                      Illinois 8th",
+                "Schakowsky, Janice                        Illinois 9th",
+                "Schneider, Bradley                        Illinois 10th",
+                "Foster, Bill                              Illinois 11th",
+                "Bost, Mike                                Illinois 12th",
+                "Budzinski, Nikki                          Illinois 13th",
+                "Underwood, Lauren                         Illinois 14th",
+                "Miller, Mary                              Illinois 15th",
+                "LaHood, Darin                             Illinois 16th",
+                "Sorensen, Eric                            Illinois 17th",
               ],
             "IN": [
-                "Indiana 1st Mrvan, Frank",
-                "Indiana 2nd Yakym, Rudy",
-                "Indiana 3rd Banks, Jim",
-                "Indiana 4th Baird, James",
-                "Indiana 5th Spartz, Victoria",
-                "Indiana 6th Pence, Greg",
-                "Indiana 7th Carson, Andre",
-                "Indiana 8th Bucshon, Larry",
-                "Indiana 9th Houchin, Erin"
+                "Mrvan, Frank                              Indiana 1st",
+                "Yakym, Rudy                               Indiana 2nd",
+                "Stutzman, Marlin                          Indiana 3rd",
+                "Baird, James                              Indiana 4th",
+                "Spartz, Victoria                          Indiana 5th",
+                "Shreve, Jefferson                         Indiana 6th",
+                "Carson, Andre                             Indiana 7th",
+                "Messmer, Mark                             Indiana 8th",
+                "Houchin, Erin                             Indiana 9th",
             ],
             "IA": [
-                "Iowa 1st Miller-Meeks, Mariannette",
-                "Iowa 2nd Hinson, Ashley",
-                "Iowa 3rd Nunn, Zachary",
-                "Iowa 4th Feenstra, Randy"
+                "Miller-Meeks, Mariannette                 Iowa 1st",
+                "Hinson, Ashley                            Iowa 2nd",
+                "Nunn, Zachary                             Iowa 3rd",
+                "Feenstra, Randy                           Iowa 4th",
             ],
             "KS": [
-                "Kansas 1st Mann, Tracey",
-                "Kansas 2nd LaTurner, Jake",
-                "Kansas 3rd Davids, Sharice",
-                "Kansas 4th Estes, Ron"
+                "Mann, Tracey                              Kansas 1st",
+                "Schmidt, Derek                            Kansas 2nd",
+                "Davids, Sharice                           Kansas 3rd",
+                "Estes, Ron                                Kansas 4th",
             ],
             "KY": [
-                "Kentucky 1st Comer, James",
-                "Kentucky 2nd Guthrie, Brett",
-                "Kentucky 3rd McGarvey, Morgan",
-                "Kentucky 4th Massie, Thomas",
-                "Kentucky 5th Rogers, Harold",
-                "Kentucky 6th Barr, Andy"
+                "Comer, James                              Kentucky 1st",
+                "Guthrie, Brett                            Kentucky 2nd",
+                "McGarvey, Morgan                          Kentucky 3rd",
+                "Massie, Thomas                            Kentucky 4th",
+                "Rogers, Harold                            Kentucky 5th",
+                "Barr, Andy                                Kentucky 6th",
             ],
             "LA": [
-                "Louisiana 1st Scalise, Steve",
-                "Louisiana 2nd Carter, Troy",
-                "Louisiana 3rd Higgins, Clay",
-                "Louisiana 4th Johnson, Mike",
-                "Louisiana 5th Letlow, Julia",
-                "Louisiana 6th Graves, Garret"
+                "Scalise, Steve                            Louisiana 1st",
+                "Carter, Troy                              Louisiana 2nd",
+                "Higgins, Clay                             Louisiana 3rd",
+                "Johnson, Mike                             Louisiana 4th",
+                "Letlow, Julia                             Louisiana 5th",
+                "Fields, Cleo                              Louisiana 6th",
             ],
             "ME": [
-                "Maine 1st Pingree, Chellie",
-                "Maine 2nd Golden, Jared"
+                "Pingree, Chellie                          Maine 1st",
+                "Golden, Jared                             Maine 2nd",
               ],
             "MD": [
-                "Maryland 1st Harris, Andy",
-                "Maryland 2nd Ruppersberger, C.",
-                "Maryland 3rd Sarbanes, John",
-                "Maryland 4th Ivey, Glenn",
-                "Maryland 5th Hoyer, Steny",
-                "Maryland 6th Trone, David",
-                "Maryland 7th Mfume, Kweisi",
-                "Maryland 8th Raskin, Jamie"
+                "Harris, Andy                              Maryland 1st",
+                "Olszewski, Johnny                         Maryland 2nd",
+                "Elfreth, Sarah                            Maryland 3rd",
+                "Ivey, Glenn                               Maryland 4th",
+                "Hoyer, Steny                              Maryland 5th",
+                "McClain Delaney, April                    Maryland 6th",
+                "Mfume, Kweisi                             Maryland 7th",
+                "Raskin, Jamie                             Maryland 8th",
             ],
             "MA": [
-                "Massachusetts 1st Neal, Richard",
-                "Massachusetts 2nd McGovern, James",
-                "Massachusetts 3rd Trahan, Lori",
-                "Massachusetts 4th Auchincloss, Jake",
-                "Massachusetts 5th Clark, Katherine",
-                "Massachusetts 6th Moulton, Seth",
-                "Massachusetts 7th Pressley, Ayanna",
-                "Massachusetts 8th Lynch, Stephen",
-                "Massachusetts 9th Keating, William"
+                "Neal, Richard                             Massachusetts 1st",
+                "McGovern, James                           Massachusetts 2nd",
+                "Trahan, Lori                              Massachusetts 3rd",
+                "Auchincloss, Jake                         Massachusetts 4th",
+                "Clark, Katherine                          Massachusetts 5th",
+                "Moulton, Seth                             Massachusetts 6th",
+                "Pressley, Ayanna                          Massachusetts 7th",
+                "Lynch, Stephen                            Massachusetts 8th",
+                "Keating, William                          Massachusetts 9th",
             ],
             "MI": [
-                "Michigan 1st Bergman, Jack",
-                "Michigan 2nd Moolenaar, John",
-                "Michigan 3rd Scholten, Hillary",
-                "Michigan 4th Huizenga, Bill",
-                "Michigan 5th Walberg, Tim",
-                "Michigan 6th Dingell, Debbie",
-                "Michigan 7th Slotkin, Elissa",
-                "Michigan 8th Kildee, Daniel",
-                "Michigan 9th McClain, Lisa",
-                "Michigan 10th James, John",
-                "Michigan 11th Stevens, Haley",
-                "Michigan 12th Tlaib, Rashida",
-                "Michigan 13th Thanedar, Shri",
+                "Bergman, Jack                             Michigan 1st",
+                "Moolenaar, John                           Michigan 2nd",
+                "Scholten, Hillary                         Michigan 3rd",
+                "Huizenga, Bill                            Michigan 4th",
+                "Walberg, Tim                              Michigan 5th",
+                "Dingell, Debbie                           Michigan 6th",
+                "Barrett, Tom                              Michigan 7th",
+                "McDonald Rivet, Kristen                   Michigan 8th",
+                "McClain, Lisa                             Michigan 9th",
+                "James, John                               Michigan 10th",
+                "Stevens, Haley                            Michigan 11th",
+                "Tlaib, Rashida                            Michigan 12th",
+                "Thanedar, Shri                            Michigan 13th",
             ],
             "MN": [
-                "Minnesota 1st Finstad, Brad",
-                "Minnesota 2nd Craig, Angie",
-                "Minnesota 3rd Phillips, Dean",
-                "Minnesota 4th McCollum, Betty",
-                "Minnesota 5th Omar, Ilhan",
-                "Minnesota 6th Emmer, Tom",
-                "Minnesota 7th Fischbach, Michelle",
-                "Minnesota 8th Stauber, Pete"
+                "Finstad, Brad                             Minnesota 1st",
+                "Craig, Angie                              Minnesota 2nd",
+                "Morrison, Kelly                           Minnesota 3rd",
+                "McCollum, Betty                           Minnesota 4th",
+                "Omar, Ilhan                               Minnesota 5th",
+                "Emmer, Tom                                Minnesota 6th",
+                "Fischbach, Michelle                       Minnesota 7th",
+                "Stauber, Pete                             Minnesota 8th",
             ],
             "MS": [
-                "Mississippi 1st Kelly, Trent",
-                "Mississippi 2nd Thompson, Bennie",
-                "Mississippi 3rd Guest, Michael",
-                "Mississippi 4th Ezell, Mike"
+               "Kelly, Trent                              Mississippi 1st",
+               "Thompson, Bennie                          Mississippi 2nd",
+               "Guest, Michael                            Mississippi 3rd",
+               "Ezell, Mike                               Mississippi 4th",
             ],
             "MO": [
-                "Missouri 1st Bush, Cori",
-                "Missouri 2nd Wagner, Ann",
-                "Missouri 3rd Luetkemeyer, Blaine",
-                "Missouri 4th Alford, Mark",
-                "Missouri 5th Cleaver, Emanuel",
-                "Missouri 6th Graves, Sam",
-                "Missouri 7th Burlison, Eric",
-                "Missouri 8th Smith, Jason"
+                "Bell, Wesley                              Missouri 1st",
+                "Wagner, Ann                               Missouri 2nd",
+                "Onder, Robert                             Missouri 3rd",
+                "Alford, Mark                              Missouri 4th",
+                "Cleaver, Emanuel                          Missouri 5th",
+                "Graves, Sam                               Missouri 6th",
+                "Burlison, Eric                            Missouri 7th",
+                "Smith, Jason                              Missouri 8th",
             ],
             "MT": [
-                "Montana 1st Zinke, Ryan",
-                "Montana 2nd Rosendale, Matthew"
-            ],
-            "NE": [
-                "Nebraska 1st Flood, Mike",
-                "Nebraska 2nd Bacon, Don",
-                "Nebraska 3rd Smith, Adrian"
-            ],
-            "NV": [
-                "Nevada 1st Titus, Dina",
-                "Nevada 2nd Amodei, Mark",
-                "Nevada 3rd Lee, Susie",
-                "Nevada 4th Horsford, Steven"
-            ],
-            "NH": [
-                "New Hampshire 1st Pappas, Chris",
-                "New Hampshire 2nd Kuster, Ann"
-            ],
-            "NM": [
-                "New Mexico 1st Stansbury, Melanie",
-                "New Mexico 2nd Vasquez, Gabe",
-                "New Mexico 3rd Leger Fernandez, Teresa"
-            ],
-            "NY": [
-                "New York 1st LaLota, Nick",
-                "New York 2nd Garbarino, Andrew",
-                "New York 3rd Santos, George",
-                "New York 4th D'Esposito, Anthony",
-                "New York 5th Meeks, Gregory",
-                "New York 6th Meng, Grace",
-                "New York 7th Velazquez, Nydia",
-                "New York 8th Jeffries, Hakeem",
-                "New York 9th Clarke, Yvette",
-                "New York 10th Goldman, Daniel",
-                "New York 11th Malliotakis, Nicole",
-                "New York 12th Nadler, Jerrold",
-                "New York 13th Espaillat, Adriano",
-                "New York 14th Ocasio-Cortez, Alexandria",
-                "New York 15th Torres, Ritchie",
-                "New York 16th Bowman, Jamaal",
-                "New York 17th Lawler, Michael",
-                "New York 18th Ryan, Patrick",
-                "New York 19th Molinaro, Marcus",
-                "New York 20th Tonko, Paul",
-                "New York 21st Stefanik, Elise",
-                "New York 22nd Williams, Brandon",
-                "New York 23rd Langworthy, Nicholas",
-                "New York 24th Tenney, Claudia",
-                "New York 25th Morelle, Joseph",
-                "New York 26th Higgins, Brian",
+                "Zinke, Ryan                               Montana 1st",
+                "Downing, Troy                             Montana 2nd",
             ],
             "NC": [
-                "North Carolina 1st Davis, Donald",
-                "North Carolina 2nd Ross, Deborah",
-                "North Carolina 3rd Murphy, Gregory",
-                "North Carolina 4th Foushee, Valerie",
-                "North Carolina 5th Foxx, Virginia",
-                "North Carolina 6th Manning, Kathy",
-                "North Carolina 7th Rouzer, David",
-                "North Carolina 8th Bishop, Dan",
-                "North Carolina 9th Hudson, Richard",
-                "North Carolina 10th McHenry, Patrick",
-                "North Carolina 11th Edwards, Chuck",
-                "North Carolina 12th Adams, Alma",
-                "North Carolina 13th Nickel, Wiley",
-                "North Carolina 14th Jackson, Jeff",
+                "Davis, Donald                             North Carolina 1st",
+                "Ross, Deborah                             North Carolina 2nd",
+                "Murphy, Gregory                           North Carolina 3rd",
+                "Foushee, Valerie                          North Carolina 4th",
+                "Foxx, Virginia                            North Carolina 5th",
+                "McDowell, Addison                         North Carolina 6th",
+                "Rouzer, David                             North Carolina 7th",
+                "Harris, Mark                              North Carolina 8th",
+                "Hudson, Richard                           North Carolina 9th",
+                "Harrigan, Pat                             North Carolina 10th",
+                "Edwards, Chuck                            North Carolina 11th",
+                "Adams, Alma                               North Carolina 12th",
+                "Knott, Brad                               North Carolina 13th",
+                "Moore, Tim                                North Carolina 14th",
             ],
             "ND": [
-                "North Dakota At Large Armstrong, Kelly"
+                "Fedorchak, Julie                          North Dakota At Large",
+            ],
+            "NE": [
+                "Flood, Mike                               Nebraska 1st",
+                "Bacon, Don                                Nebraska 2nd",
+                "Smith, Adrian                             Nebraska 3rd",
+            ],
+            "NV": [
+                "Titus, Dina                               Nevada 1st",
+                "Amodei, Mark                              Nevada 2nd",
+                "Lee, Susie                                Nevada 3rd",
+                "Horsford, Steven                          Nevada 4th",
+            ],
+            "NH": [
+                "Pappas, Chris                             New Hampshire 1st",
+                "Goodlander, Maggie                        New Hampshire 2nd",
+            ],
+            "NJ": [
+                "Norcross, Donald                          New Jersey 1st",
+                "Van Drew, Jefferson                       New Jersey 2nd",
+                "Conaway, Herbert                          New Jersey 3rd",
+                "Smith, Christopher                        New Jersey 4th",
+                "Gottheimer, Josh                          New Jersey 5th",
+                "Pallone, Frank                            New Jersey 6th",
+                "Kean, Thomas                              New Jersey 7th",
+                "Menendez, Robert                          New Jersey 8th",
+                "Pou, Nellie                               New Jersey 9th",
+                "McIver, LaMonica                          New Jersey 10th",
+                "Sherrill, Mikie- Vacancy                  New Jersey 11th",
+                "Watson Coleman, Bonnie                    New Jersey 12th",
+            ],
+            "NM": [
+                "Stansbury, Melanie                        New Mexico 1st",
+                "Vasquez, Gabe                             New Mexico 2nd",
+                "Leger Fernandez, Teresa                   New Mexico 3rd",
+            ],
+            "NY": [
+                "LaLota, Nick                              New York 1st",
+                "Garbarino, Andrew                         New York 2nd",
+                "Suozzi, Thomas R.                         New York 3rd",
+                "Gillen, Laura                             New York 4th",
+                "Meeks, Gregory                            New York 5th",
+                "Meng, Grace                               New York 6th",
+                "Velazquez, Nydia                          New York 7th",
+                "Jeffries, Hakeem                          New York 8th",
+                "Clarke, Yvette                            New York 9th",
+                "Goldman, Daniel                           New York 10th",
+                "Malliotakis, Nicole                       New York 11th",
+                "Nadler, Jerrold                           New York 12th",
+                "Espaillat, Adriano                        New York 13th",
+                "Ocasio-Cortez, Alexandria                 New York 14th",
+                "Torres, Ritchie                           New York 15th",
+                "Latimer, George                           New York 16th",
+                "Lawler, Michael                           New York 17th",
+                "Ryan, Patrick                             New York 18th",
+                "Riley, Josh                               New York 19th",
+                "Tonko, Paul                               New York 20th",
+                "Stefanik, Elise                           New York 21st",
+                "Mannion, John                             New York 22nd",
+                "Langworthy, Nicholas                      New York 23rd",
+                "Tenney, Claudia                           New York 24th",
+                "Morelle, Joseph                           New York 25th",
+                "Kennedy, Timothy                          New York 26th",
             ],
             "MP": [
-                "Northern Mariana Islands Delegate Sablan, Gregorio"
+                "King-Hinds, Kimberlyn                     Northern Mariana Islands Delegate",
             ],
             "OH": [
-                "Ohio 1st Landsman, Greg",
-                "Ohio 2nd Wenstrup, Brad",
-                "Ohio 3rd Beatty, Joyce",
-                "Ohio 4th Jordan, Jim",
-                "Ohio 5th Latta, Robert",
-                "Ohio 6th Johnson, Bill",
-                "Ohio 7th Miller, Max",
-                "Ohio 8th Davidson, Warren",
-                "Ohio 9th Kaptur, Marcy",
-                "Ohio 10th Turner, Michael",
-                "Ohio 11th Brown, Shontel",
-                "Ohio 12th Balderson, Troy",
-                "Ohio 13th Sykes, Emilia",
-                "Ohio 14th Joyce, David",
-                "Ohio 15th Carey, Mike",
+                "Landsman, Greg                            Ohio 1st",
+                "Taylor, David                             Ohio 2nd",
+                "Beatty, Joyce                             Ohio 3rd",
+                "Jordan, Jim                               Ohio 4th",
+                "Latta, Robert                             Ohio 5th",
+                "Rulli, Michael A.                         Ohio 6th",
+                "Miller, Max                               Ohio 7th",
+                "Davidson, Warren                          Ohio 8th",
+                "Kaptur, Marcy                             Ohio 9th",
+                "Turner, Michael                           Ohio 10th",
+                "Brown, Shontel                            Ohio 11th",
+                "Balderson, Troy                           Ohio 12th",
+                "Sykes, Emilia                             Ohio 13th",
+                "Joyce, David                              Ohio 14th",
+                "Carey, Mike                               Ohio 15th",
             ],
             "OK": [
-                "Oklahoma 1st Hern, Kevin",
-                "Oklahoma 2nd Brecheen, Josh",
-                "Oklahoma 3rd Lucas, Frank",
-                "Oklahoma 4th Cole, Tom",
-                "Oklahoma 5th Bice, Stephanie"
+                "Hern, Kevin                               Oklahoma 1st",
+                "Brecheen, Josh                            Oklahoma 2nd",
+                "Lucas, Frank                              Oklahoma 3rd",
+                "Cole, Tom                                 Oklahoma 4th",
+                "Bice, Stephanie                           Oklahoma 5th",
             ],
             "OR": [
-                "Oregon 1st Bonamici, Suzanne",
-                "Oregon 2nd Bentz, Cliff",
-                "Oregon 3rd Blumenauer, Earl",
-                "Oregon 4th Hoyle, Val",
-                "Oregon 5th Chavez-DeRemer, Lori",
-                "Oregon 6th Salinas, Andrea"
+                "Bonamici, Suzanne                         Oregon 1st",
+                "Bentz, Cliff                              Oregon 2nd",
+                "Dexter, Maxine                            Oregon 3rd",
+                "Hoyle, Val                                Oregon 4th",
+                "Bynum, Janelle                            Oregon 5th",
+                "Salinas, Andrea                           Oregon 6th",
             ],
             "PA": [
-                "Pennsylvania 1st Fitzpatrick, Brian",
-                "Pennsylvania 2nd Boyle, Brendan",
-                "Pennsylvania 3rd Evans, Dwight",
-                "Pennsylvania 4th Dean, Madeleine",
-                "Pennsylvania 5th Scanlon, Mary",
-                "Pennsylvania 6th Houlahan, Chrissy",
-                "Pennsylvania 7th Wild, Susan",
-                "Pennsylvania 8th Cartwright, Matt",
-                "Pennsylvania 9th Meuser, Daniel",
-                "Pennsylvania 10th Perry, Scott",
-                "Pennsylvania 11th Smucker, Lloyd",
-                "Pennsylvania 12th Lee, Summer",
-                "Pennsylvania 13th Joyce, John",
-                "Pennsylvania 14th Reschenthaler, Guy",
-                "Pennsylvania 15th Thompson, Glenn",
-                "Pennsylvania 16th Kelly, Mike",
-                "Pennsylvania 17th Deluzio, Christopher",
+                "Fitzpatrick, Brian                        Pennsylvania 1st",
+                "Boyle, Brendan                            Pennsylvania 2nd",
+                "Evans, Dwight                             Pennsylvania 3rd",
+                "Dean, Madeleine                           Pennsylvania 4th",
+                "Scanlon, Mary Gay                         Pennsylvania 5th",
+                "Houlahan, Chrissy                         Pennsylvania 6th",
+                "Mackenzie, Ryan                           Pennsylvania 7th",
+                "Bresnahan, Robert                         Pennsylvania 8th",
+                "Meuser, Daniel                            Pennsylvania 9th",
+                "Perry, Scott                              Pennsylvania 10th",
+                "Smucker, Lloyd                            Pennsylvania 11th",
+                "Lee, Summer                               Pennsylvania 12th",
+                "Joyce, John                               Pennsylvania 13th",
+                "Reschenthaler, Guy                        Pennsylvania 14th",
+                "Thompson, Glenn                           Pennsylvania 15th",
+                "Kelly, Mike                               Pennsylvania 16th",
+                "Deluzio, Christopher                      Pennsylvania 17th",
             ],
             "PR": [
-                "Puerto Rico Resident Commissioner Gonzalez-Colon, Jenniffer"
+                "Hernandez, Pablo                          Puerto Rico Resident Commissioner",
             ],
             "RI": [
-                "Rhode Island 1st Cicilline, David",
-                "Rhode Island 2nd Langevin, James"
+                "Amo, Gabe                                 Rhode Island 1st",
+                "Magaziner, Seth                           Rhode Island 2nd",
             ],
             "SC": [
-                "South Carolina 1st Mace, Nancy",
-                "South Carolina 2nd Wilson, Joe",
-                "South Carolina 3rd Duncan, Jeff",
-                "South Carolina 4th Timmons, William",
-                "South Carolina 5th Norman, Ralph",
-                "South Carolina 6th Clyburn, James",
-                "South Carolina 7th Fry, Russell"
+                "Mace, Nancy                               South Carolina 1st",
+                "Wilson, Joe                               South Carolina 2nd",
+                "Biggs, Sheri                              South Carolina 3rd",
+                "Timmons, William                          South Carolina 4th",
+                "Norman, Ralph                             South Carolina 5th",
+                "Clyburn, James                            South Carolina 6th",
+                "Fry, Russell                              South Carolina 7th",
             ],
             "SD": [
-                "South Dakota At Large Johnson, Dusty"
+                "Johnson, Dusty                            South Dakota At Large",
             ],
             "TN": [
-                "Tennessee 1st Harshbarger, Diana",
-                "Tennessee 2nd Burchett, Tim",
-                "Tennessee 3rd Fleischmann, Charles",
-                "Tennessee 4th DesJarlais, Scott",
-                "Tennessee 5th Ogles, Andrew",
-                "Tennessee 6th Rose, John",
-                "Tennessee 7th Green, Mark",
-                "Tennessee 8th Kustoff, David",
-                "Tennessee 9th Cohen, Steve"
+                "Harshbarger, Diana                        Tennessee 1st",
+                "Burchett, Tim                             Tennessee 2nd",
+                "Fleischmann, Charles                      Tennessee 3rd",
+                "DesJarlais, Scott                         Tennessee 4th",
+                "Ogles, Andrew                             Tennessee 5th",
+                "Rose, John                                Tennessee 6th",
+                "Van Epps, Matt                            Tennessee 7th",
+                "Kustoff, David                            Tennessee 8th",
+                "Cohen, Steve                              Tennessee 9th",
             ],
             "TX": [
-                "Texas 1st Moran, Nathaniel",
-                "Texas 2nd Crenshaw, Dan",
-                "Texas 3rd Self, Keith",
-                "Texas 4th Fallon, Pat",
-                "Texas 5th Gooden, Lance",
-                "Texas 6th Ellzey, Jake",
-                "Texas 7th Fletcher, Lizzie",
-                "Texas 8th Luttrell, Morgan",
-                "Texas 9th Green, Al",
-                "Texas 10th McCaul, Michael",
-                "Texas 11th Pfluger, August",
-                "Texas 12th Granger, Kay",
-                "Texas 13th Jackson, Ronny",
-                "Texas 14th Weber, Randy",
-                "Texas 15th De La Cruz, Monica",
-                "Texas 16th Escobar, Veronica",
-                "Texas 17th Sessions, Pete",
-                "Texas 18th Jackson Lee, Sheila",
-                "Texas 19th Arrington, Jodey",
-                "Texas 20th Castro, Joaquin",
-                "Texas 21st Roy, Chip",
-                "Texas 22nd Nehls, Troy",
-                "Texas 23rd Gonzales, Tony",
-                "Texas 24th Van Duyne, Beth",
-                "Texas 25th Williams, Roger",
-                "Texas 26th Burgess, Michael",
-                "Texas 27th Cloud, Michael",
-                "Texas 28th Cuellar, Henry",
-                "Texas 29th Garcia, Sylvia",
-                "Texas 30th Crockett, Jasmine",
-                "Texas 31st Carter, John",
-                "Texas 32nd Allred, Colin",
-                "Texas 33rd Veasey, Marc",
-                "Texas 34th Gonzalez, Vicente",
-                "Texas 35th Casar, Greg",
-                "Texas 36th Babin, Brian",
-                "Texas 37th Doggett, Lloyd",
-                "Texas 38th Hunt, Wesley",
+               "Moran, Nathaniel                          Texas 1st",
+               "Crenshaw, Dan                             Texas 2nd",
+               "Self, Keith                               Texas 3rd",
+               "Fallon, Pat                               Texas 4th",
+               "Gooden, Lance                             Texas 5th",
+               "Ellzey, Jake                              Texas 6th",
+               "Fletcher, Lizzie                          Texas 7th",
+               "Luttrell, Morgan                          Texas 8th",
+               "Green, Al                                 Texas 9th",
+               "McCaul, Michael                           Texas 10th",
+               "Pfluger, August                           Texas 11th",
+               "Goldman, Craig                            Texas 12th",
+               "Jackson, Ronny                            Texas 13th",
+               "Weber, Randy                              Texas 14th",
+               "De La Cruz, Monica                        Texas 15th",
+               "Escobar, Veronica                         Texas 16th",
+               "Sessions, Pete                            Texas 17th",
+               "Turner, Sylvester- Vacancy                Texas 18th",
+               "Arrington, Jodey                          Texas 19th",
+               "Castro, Joaquin                           Texas 20th",
+               "Roy, Chip                                 Texas 21st",
+               "Nehls, Troy                               Texas 22nd",
+               "Gonzales, Tony                            Texas 23rd",
+               "Van Duyne, Beth                           Texas 24th",
+               "Williams, Roger                           Texas 25th",
+               "Gill, Brandon                             Texas 26th",
+               "Cloud, Michael                            Texas 27th",
+               "Cuellar, Henry                            Texas 28th",
+               "Garcia, Sylvia                            Texas 29th",
+               "Crockett, Jasmine                         Texas 30th",
+               "Carter, John                              Texas 31st",
+               "Johnson, Julie                            Texas 32nd",
+               "Veasey, Marc                              Texas 33rd",
+               "Gonzalez, Vicente                         Texas 34th",
+               "Casar, Greg                               Texas 35th",
+               "Babin, Brian                              Texas 36th",
+               "Doggett, Lloyd                            Texas 37th",
+               "Hunt, Wesley                              Texas 38th",
             ],
             "UT": [
-                "Utah 1st Moore, Blake",
-                "Utah 2nd Stewart, Chris",
-                "Utah 3rd Curtis, John",
-                "Utah 4th Owens, Burgess"
+               "Moore, Blake                              Utah 1st",
+               "Maloy, Celeste                            Utah 2nd",
+               "Kennedy, Mike                             Utah 3rd",
+               "Owens, Burgess                            Utah 4th",
             ],
             "VT": [
-                "Vermont At Large Balint, Becca"
+               "Balint, Becca                             Vermont At Large",
               ],
             "VI": [
-                "Virgin Islands Delegate Plaskett, Stacey"
+                "Plaskett, Stacey                          Virgin Islands Delegate",
             ],
             "VA": [
-                "Virginia 1st Wittman, Robert",
-                "Virginia 2nd Kiggans, Jennifer",
-                "Virginia 3rd Scott, Robert",
-                "Virginia 4th McClellan, Jennifer",
-                "Virginia 5th Good, Bob",
-                "Virginia 6th Cline, Ben",
-                "Virginia 7th Spanberger, Abigail",
-                "Virginia 8th Beyer, Donald",
-                "Virginia 9th Griffith, H.",
-                "Virginia 10th Wexton, Jennifer",
-                "Virginia 11th Connolly, Gerald",
+                "Wittman, Robert                           Virginia 1st",
+                "Kiggans, Jennifer                         Virginia 2nd",
+                "Scott, Robert                             Virginia 3rd",
+                "McClellan, Jennifer                       Virginia 4th",
+                "McGuire, John                             Virginia 5th",
+                "Cline, Ben                                Virginia 6th",
+                "Vindman, Eugene                           Virginia 7th",
+                "Beyer, Donald                             Virginia 8th",
+                "Griffith, H.                              Virginia 9th",
+                "Subramanyam, Suhas                        Virginia 10th",
+                "Walkinshaw, James                         Virginia 11th",,
             ],
             "WA": [
-                "Washington 1st DelBene, Suzan",
-                "Washington 2nd Larsen, Rick",
-                "Washington 3rd Perez, Marie",
-                "Washington 4th Newhouse, Dan",
-                "Washington 5th Rodgers, Cathy",
-                "Washington 6th Kilmer, Derek",
-                "Washington 7th Jayapal, Pramila",
-                "Washington 8th Schrier, Kim",
-                "Washington 9th Smith, Adam",
-                "Washington 10th Strickland, Marilyn",
+                "DelBene, Suzan                            Washington 1st",
+                "Larsen, Rick                              Washington 2nd",
+                "Perez, Marie                              Washington 3rd",
+                "Newhouse, Dan                             Washington 4th",
+                "Baumgartner, Michael                      Washington 5th",
+                "Randall, Emily                            Washington 6th",
+                "Jayapal, Pramila                          Washington 7th",
+                "Schrier, Kim                              Washington 8th",
+                "Smith, Adam                               Washington 9th",
+                "Strickland, Marilyn                       Washington 10th",
             ],
             "WV": [
-                "West Virginia 1st Miller, Carol",
-                "West Virginia 2nd Mooney, Alexander"
+                "Miller, Carol                             West Virginia 1st",
+                "Moore, Riley                              West Virginia 2nd",
             ],
             "WI": [
-                "Wisconsin 1st Steil, Bryan",
-                "Wisconsin 2nd Pocan, Mark",
-                "Wisconsin 3rd Van Orden, Derrick",
-                "Wisconsin 4th Moore, Gwen",
-                "Wisconsin 5th Fitzgerald, Scott",
-                "Wisconsin 6th Grothman, Glenn",
-                "Wisconsin 7th Tiffany, Thomas",
-                "Wisconsin 8th Gallagher, Mike"
+                "Steil, Bryan                              Wisconsin 1st",
+                "Pocan, Mark                               Wisconsin 2nd",
+                "Van Orden, Derrick                        Wisconsin 3rd",
+                "Moore, Gwen                               Wisconsin 4th",
+                "Fitzgerald, Scott                         Wisconsin 5th",
+                "Grothman, Glenn                           Wisconsin 6th",
+                "Tiffany, Thomas                           Wisconsin 7th",
+                "Wied, Tony                                Wisconsin 8th"
             ],
-            "WY": ["Wyoming At Large Hageman, Harriet"]
+            "WY": ["Hageman, Harriet                          Wyoming At Large",]
     },
     {
       "Question" : "Who does a U.S. Senator represent?",
@@ -904,7 +1158,7 @@
     },
     {
       "Question" : "Why do some states have more Representatives than other states?",
-      "Answers" : ["(because of) The state’s population", "(because) They have more people", "(because) Some states have more people"]
+      "Answers" : ["(because of) The state's population", "(because) They have more people", "(because) Some states have more people"]
     },
     {
       "Question" : "We elect a President for how many years?",
@@ -916,11 +1170,11 @@
     },
     {
       "Question" : "What is the name of the President of the United States now?",
-      "Answers" : ["Joe Biden"]
+      "Answers" : ["Donald John Trump"]
     },
     {
       "Question" : "What is the name of the Vice President of the United States now?",
-      "Answers" : ["Kamala Harris"]
+      "Answers" : ["James David Vance"]
     },
     {
       "Question" : "If the President can no longer serve, who becomes President?",
@@ -943,7 +1197,7 @@
       "Answers" : ["The President"]
     },
     {
-      "Question" : "What does the President’s Cabinet do?",
+      "Question" : "What does the President's Cabinet do?",
       "Answers" : ["Advises the President"]
     },
     {
@@ -977,62 +1231,62 @@
     {
       "Question" : "Under our Constitution, some powers belong to the states. What is one power of the states?",
       "Answers" : ["Provide schooling and education", "Provide protection (police)", "provide safety (fire departments)", 
-                   "Give a driver’s license", "Approve zoning and land use"]
+                   "Give a driver's license", "Approve zoning and land use"]
     },
     {
       "Question" : "Who is the Governor of your state now?",
       "Answers" : [],
       "Regional": true,
-      "AL": ["Kay Ivey ( Alabama )"],
-      "AK": ["Mike Dunleavy ( Alaska )"],
-      "AZ": ["Doug Ducey ( Arizona )"],
-      "AR": ["Asa Hutchinson ( Arkansas )"],
-      "CA": ["Gavin Newsom ( California )"],
-      "CO": ["Jared Polis ( Colorado )"],
-      "CT": ["Ned Lamont ( Connecticut )"],
-      "DE": ["John Carney ( Delaware )"],
-      "FL": ["Ron DeSantis ( Florida )"],
-      "GA": ["Brian Kemp ( Georgia )"],
-      "HI": ["David Ige ( Hawaii )"],
-      "ID": ["Brad Little ( Idaho )"],
-      "IL": ["J.B. Pritzker ( Illinois )"],
-      "IN": ["Eric Holcomb ( Indiana )"],
-      "IA": ["Kim Reynolds ( Iowa )"],
-      "KS": ["Laura Kelly ( Kansas )"],
-      "KY": ["Andy Beshear ( Kentucky )"],
-      "LA": ["John Bel Edwards ( Louisiana )"],
-      "ME": ["Janet Mills ( Maine )"],
-      "MD": ["Larry Hogan ( Maryland )"],
-      "MA": ["Charlie Baker ( Massachusetts )"],
-      "MI": ["Gretchen Whitmer ( Michigan )"],
-      "MN": ["Tim Walz ( Minnesota )"],
-      "MS": ["Tate Reeves ( Mississippi )"],
-      "MO": ["Mike Parson ( Missouri )"],
-      "MT": ["Greg Gianforte ( Montana )"],
-      "NE": ["Pete Ricketts ( Nebraska )"],
-      "NV": ["Steve Sisolak ( Nevada )"],
-      "NH": ["Chris Sununu ( New Hampshire )"],
-      "NJ": ["Phil Murphy ( New Jersey )"],
-      "NM": ["Michelle Lujan Grisham ( New Mexico )"],
-      "NY": ["Kathy Hochul ( New York )"],
-      "NC": ["Roy Cooper ( North Carolina )"],
-      "ND": ["Doug Burgum ( North Dakota )"],
-      "OH": ["Mike DeWine ( Ohio )"],
-      "OK": ["Kevin Stitt ( Oklahoma )"],
-      "OR": ["Kate Brown ( Oregon )"],
-      "PA": ["Tom Wolf ( Pennsylvania )"],
-      "RI": ["Dan McKee ( Rhode Island )"],
-      "SC": ["Henry McMaster ( South Carolina )"],
-      "SD": ["Kristi Noem ( South Dakota )"],
-      "TN": ["Bill Lee ( Tennessee )"],
-      "TX": ["Greg Abbott ( Texas )"],
-      "UT": ["Spencer Cox ( Utah )"],
-      "VT": ["Phil Scott ( Vermont )"],
-      "VA": ["Ralph Northam ( Virginia )"],
-      "WA": ["Jay Inslee ( Washington )"],
-      "WV": ["Jim Justice ( West Virginia )"],
-      "WI": ["Tony Evers ( Wisconsin )"],
-      "WY": ["Mark Gordon ( Wyoming )"],
+      "AL": ["Alabama Gov. Kay Ivey"],
+      "AK": ["Alaska Gov. Mike Dunleavy"],
+      "AZ": ["Arizona Gov. Katie Hobbs"],
+      "AR": ["Arkansas Gov. Sarah Huckabee Sanders"],
+      "CA": ["California Gov. Gavin Newsom"],
+      "CO": ["Colorado Gov. Jared Polis"],
+      "CT": ["Connecticut Gov. Ned Lamont"],
+      "DE": ["Delaware Gov. Matt Meyer"],
+      "FL": ["Florida Gov. Ron DeSantis"],
+      "GA": ["Georgia Gov. Brian Kemp"],
+      "HI": ["Hawaii Gov. Josh Green"],
+      "ID": ["Idaho Gov. Brad Little"],
+      "IL": ["Illinois Gov. JB Pritzker"],
+      "IN": ["Indiana Gov. Mike Braun"],
+      "IA": ["Iowa Gov. Kim Reynolds"],
+      "KS": ["Kansas Gov. Laura Kelly"],
+      "KY": ["Kentucky Gov. Andy Beshear"],
+      "LA": ["Louisiana Gov. Jeff Landry"],
+      "ME": ["Maine Gov. Janet Mills"],
+      "MD": ["Maryland Gov. Wes Moore"],
+      "MA": ["Massachusetts Gov. Maura Healey"],
+      "MI": ["Michigan Gov. Gretchen Whitmer"],
+      "MN": ["Minnesota Gov. Tim Walz"],
+      "MS": ["Mississippi Gov. Tate Reeves"],
+      "MO": ["Missouri Gov. Mike Kehoe"],
+      "MT": ["Montana Gov. Greg Gianforte"],
+      "NE": ["Nebraska Gov. Jim Pillen"],
+      "NV": ["Nevada Gov. Joe Lombardo"],
+      "NH": ["New Hampshire Gov. Kelly Ayotte"],
+      "NJ": ["New Jersey Gov. Mikie Sherrill"],
+      "NM": ["New Mexico Gov. Michelle Lujan Grisham"],
+      "NY": ["New York Gov. Kathy Hochul"],
+      "NC": ["North Carolina Gov. Josh Stein"],
+      "ND": ["North Dakota Gov. Kelly Armstrong"],
+      "OH": ["Ohio Gov. Mike DeWine"],
+      "OK": ["Oklahoma Gov. Kevin Stitt"],
+      "OR": ["Oregon Gov. Tina Kotek"],
+      "PA": ["Pennsylvania Gov. Josh Shapiro"],
+      "RI": ["Rhode Island Gov. Dan McKee"],
+      "SC": ["South Carolina Gov. Henry McMaster"],
+      "SD": ["South Dakota Gov. Larry Rhoden"],
+      "TN": ["Tennessee Gov. Bill Lee"],
+      "TX": ["Texas Gov. Greg Abbott"],
+      "UT": ["Utah Gov. Spencer Cox"],
+      "VT": ["Vermont Gov. Phil Scott"],
+      "VA": ["Virginia Gov. Abigail Spanberger"],
+      "WA": ["Washington Gov. Bob Ferguson"],
+      "WV": ["West Virginia Gov. Patrick Morrisey"],
+      "WI": ["Wisconsin Gov. Tony Evers"],
+      "WY": ["Wyoming Gov. Mark Gordon"],
     },
     {
       "Question" : "What is the capital of your state?",
@@ -1099,12 +1353,12 @@
     },
     {
       "Question" : "What is the name of the Speaker of the House of Representatives now?",
-      "Answers" : ["Kevin McCarthy"]
+      "Answers" : ["Mike Johnson"]
     },
     {
       "Question" : "There are four amendments to the Constitution about who can vote. Describe one of them.",
       "Answers" : ["Citizens eighteen (18) and older (can vote).",
-                   "You don’t have to pay (a poll tax) to vote.", "Any citizen can vote. (Women and men can vote.)", "A male citizen of any race (can vote)."]
+                   "You don't have to pay (a poll tax) to vote.", "Any citizen can vote. (Women and men can vote.)", "A male citizen of any race (can vote)."]
     },
     {
       "Question" : "What is one responsibility that is only for United States citizens?",
@@ -1167,7 +1421,7 @@
       "Question" : "Why did the colonists fight the British?",
       "Answers" : ["Because of high taxes (taxation without representation)", 
                    "Because the British army stayed in their houses (boarding, quartering)", 
-                   "Because they didn’t have self-government"]
+                   "Because they didn't have self-government"]
     },
     {
       "Question" : "Who wrote the Declaration of Independence?",
@@ -1199,7 +1453,7 @@
     {
       "Question" : "What is one thing Benjamin Franklin is famous for?",
       "Answers" : ["U.S. diplomat", "Oldest member of the Constitutional Convention", 
-                   "First Postmaster General of the United States", "Writer of 'Poor Richard’s Almanac'",
+                   "First Postmaster General of the United States", "Writer of 'Poor Richard's Almanac'",
                    "Started the first free libraries"]
     },
     {
@@ -1224,7 +1478,7 @@
     },
     {
       "Question" : "Name one problem that led to the Civil War.",
-      "Answers" : ["Slavery", "Economic reasons", "States’ rights"]
+      "Answers" : ["Slavery", "Economic reasons", "States' rights"]
     },
     {
       "Question" : "What was one important thing that Abraham Lincoln did?",
@@ -1237,7 +1491,7 @@
     },
     {
       "Question" : "What did Susan B. Anthony do?",
-      "Answers" : ["Fought for women’s rights", "Fought for civil rights"]
+      "Answers" : ["Fought for women's rights", "Fought for civil rights"]
     },
     {
       "Question" : "Name one war fought by the United States in the 1900s.",
@@ -1330,130 +1584,141 @@
     },
     {
       "Question" : "Name two national U.S. holidays.",
-      "Answers" : ["New Year’s Day", "Martin Luther King, Jr. Day", "Presidents’Day", "Memorial Day",
+      "Answers" : ["New Year's Day", "Martin Luther King, Jr. Day", "Presidents'Day", "Memorial Day",
                    "Independence Day", "Juneteenth", "Labor Day", "Columbus Day", "Veterans Day", "Thanksgiving",
                    "Christmas"]
     }
   ].map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
+  
   const stateCodes = [
-    "AL", // Alabama
-    "AK", // Alaska
-    "AZ", // Arizona
-    "AR", // Arkansas
-    "CA", // California
-    "CO", // Colorado
-    "CT", // Connecticut
-    "DE", // Delaware
-    "FL", // Florida
-    "GA", // Georgia
-    "HI", // Hawaii
-    "ID", // Idaho
-    "IL", // Illinois
-    "IN", // Indiana
-    "IA", // Iowa
-    "KS", // Kansas
-    "KY", // Kentucky
-    "LA", // Louisiana
-    "ME", // Maine
-    "MD", // Maryland
-    "MA", // Massachusetts
-    "MI", // Michigan
-    "MN", // Minnesota
-    "MS", // Mississippi
-    "MO", // Missouri
-    "MT", // Montana
-    "NE", // Nebraska
-    "NV", // Nevada
-    "NH", // New Hampshire
-    "NJ", // New Jersey
-    "NM", // New Mexico
-    "NY", // New York
-    "NC", // North Carolina
-    "ND", // North Dakota
-    "OH", // Ohio
-    "OK", // Oklahoma
-    "OR", // Oregon
-    "PA", // Pennsylvania
-    "RI", // Rhode Island
-    "SC", // South Carolina
-    "SD", // South Dakota
-    "TN", // Tennessee
-    "TX", // Texas
-    "UT", // Utah
-    "VT", // Vermont
-    "VA", // Virginia
-    "WA", // Washington
-    "WV", // West Virginia
-    "WI", // Wisconsin
-    "WY", // Wyoming
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
   ];
+
   const modalBackground = document.getElementById("modalBackground");
+  const stateCodeInput = document.getElementById("stateCodeInput");
+  const submitButton = document.getElementById("submitButton");
+  
+  let i = 0;
+  let isModalOpen = false;
 
   function showModal() {
-    modalBackground.style.display = "flex";
+    modalBackground.classList.add("show");
+    isModalOpen = true;
+    // Focus on input after a brief delay to ensure modal is visible
+    setTimeout(() => {
+      stateCodeInput.focus();
+    }, 100);
   }
 
   function hideModal() {
-    modalBackground.style.display = "none";
-    window.visualViewport.scale
-    window.scrollTo(0,0);
-
+    modalBackground.classList.remove("show");
+    isModalOpen = false;
+    window.scrollTo(0, 0);
   }
 
   function getStateCode() {
-    const stateCodeInput = document.getElementById("stateCodeInput").value.toUpperCase();
-    // Save the state code in localStorage
-    localStorage.setItem("current-state", stateCodeInput.toUpperCase());
-    hideModal();
-  }
-
-  var i = 0;
-
-  function advance() {
-    var state = localStorage.getItem("current-state");
-    if (state === "" || !stateCodes.includes(state)){
-      showModal();
-      console.log("something-wrong")
+    const stateCode = stateCodeInput.value.trim().toUpperCase();
+    
+    if (stateCode && stateCodes.includes(stateCode)) {
+      localStorage.setItem("current-state", stateCode);
+      hideModal();
+      // Start the quiz
+      advance();
     } else {
-      //document.getElementById('h4hidden').style.display='block';
-          if (i % 2 == 0) {
-              document.getElementById('question-text').innerHTML = questions[Math.floor(i/2)]["Question"];
-              document.getElementById('answer-text').innerHTML = " ";
-              document.getElementById('progress-text').innerHTML = (Math.floor(i/2) + 1) + "/100";
-          }
-          else {
-        var answers = "<ul>";
-        if (questions[Math.floor(i/2)]["Regional"]){
-          for (const answer of questions[Math.floor(i/2)][state]) {
-            answers += "<li>" + answer + "</li>";
-          }
-        }else {
-          for (const answer of questions[Math.floor(i/2)]["Answers"]) {
-            answers += "<li>" + answer + "</li>";
-          }
-        }
-        answers += "</ul>";
-              document.getElementById('answer-text').innerHTML = answers;
-              document.getElementById('answer-text').scrollIntoView();
-
-          }
-
-          i += 1;
-
-          if (i >= 200) {
-              i = 0;
-          }
+      alert("Please enter a valid state code (e.g., CA, NY, TX)");
+      stateCodeInput.focus();
     }
   }
 
-  document.onkeypress = function (e) {
-    advance();
-  };
+  function advance() {
+    const state = localStorage.getItem("current-state");
+    
+    // Check if we need to show modal
+    if (!state || !stateCodes.includes(state)) {
+      showModal();
+      return;
+    }
 
+    // Toggle between question and answer
+    if (i % 2 === 0) {
+      // Show question
+      document.getElementById('question-text').innerHTML = questions[Math.floor(i/2)]["Question"];
+      document.getElementById('answer-text').innerHTML = " ";
+      document.getElementById('progress-text').innerHTML = (Math.floor(i/2) + 1) + "/100";
+    } else {
+      // Show answer
+      let answers = "<ul>";
+      const currentQuestion = questions[Math.floor(i/2)];
+      
+      if (currentQuestion["Regional"]) {
+        const regionalAnswers = currentQuestion[state];
+        if (regionalAnswers && regionalAnswers.length > 0) {
+          for (const answer of regionalAnswers) {
+            answers += "<li>" + answer + "</li>";
+          }
+        } else {
+          answers += "<li>No regional data available for your state</li>";
+        }
+      } else {
+        for (const answer of currentQuestion["Answers"]) {
+          answers += "<li>" + answer + "</li>";
+        }
+      }
+      answers += "</ul>";
+      
+      document.getElementById('answer-text').innerHTML = answers;
+      
+      // Scroll to answer smoothly
+      setTimeout(() => {
+        document.getElementById('answer').scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    }
 
-  window.addEventListener('pointerdown', function() {
-    advance();
-  }, false);
+    i += 1;
+
+    // Reset after all questions
+    if (i >= 200) {
+      i = 0;
+    }
+  }
+
+  // Submit button click handler
+  submitButton.addEventListener('click', getStateCode);
+
+  // Enter key in input field
+  stateCodeInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      getStateCode();
+    }
+  });
+
+  // Keyboard advance (desktop)
+  document.addEventListener('keypress', function(e) {
+    if (!isModalOpen) {
+      advance();
+    }
+  });
+
+  // Touch/click advance
+  document.addEventListener('pointerdown', function(e) {
+    // Don't advance if clicking on modal or its contents
+    if (!isModalOpen && !modalBackground.contains(e.target)) {
+      advance();
+    }
+  });
+
+  // Check state on page load
+  window.addEventListener('load', function() {
+    const state = localStorage.getItem("current-state");
+    if (!state || !stateCodes.includes(state)) {
+      showModal();
+    }
+  });
 
   </script>
 
